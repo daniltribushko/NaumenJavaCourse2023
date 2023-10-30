@@ -3,7 +3,6 @@ package com.example.naumen2023.models.entities;
 import com.example.naumen2023.models.enums.Employment;
 import com.example.naumen2023.models.enums.Experience;
 import com.example.naumen2023.models.enums.Schedule;
-import com.example.naumen2023.models.enums.SkillEntity;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -21,7 +20,6 @@ import java.util.List;
 @Getter
 @Setter
 @ToString
-@EqualsAndHashCode
 @NoArgsConstructor
 @Table(name = "vacancies_hh_ru")
 public class VacancyHHruEntity {
@@ -36,14 +34,15 @@ public class VacancyHHruEntity {
     private String name;
 
     @ManyToOne
-    @JoinColumn(name = "programmingLanguage_id", nullable = false)
-    private ProgrammingLanguageEntity programmingLanguageName;
+    @JoinColumn(name = "programmingLanguage_id")
+    private ProgrammingLanguageEntity programmingLanguage;
 
     @ManyToOne
-    @JoinColumn(name = "area_id", nullable = false)
+    @JoinColumn(name = "area_id")
     private AreaEntity area;
 
-    @OneToOne(mappedBy = "vacancy", cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinColumn(name = "salary_id")
     private SalaryEntity salary;
 
     @Enumerated(EnumType.STRING)
@@ -58,14 +57,11 @@ public class VacancyHHruEntity {
     @Column(name = "employment", nullable = false)
     private Employment employment;
 
-    @Column(name = "description", nullable = false)
-    private String description;
-
     @OneToMany(mappedBy = "vacancy", cascade = CascadeType.ALL)
     private List<SkillEntity> skills = new ArrayList<>();
 
     @ManyToOne
-    @JoinColumn(name = "employer_id", nullable = false)
+    @JoinColumn(name = "employer_id")
     private EmployerEntity employer;
 
     @Column(name = "date_publish", nullable = false)
@@ -74,20 +70,14 @@ public class VacancyHHruEntity {
     @Column(name = "url", nullable = false)
     private String url;
 
-    public VacancyHHruEntity(String idHHru, String name, ProgrammingLanguageEntity programmingLanguageName,
-                             AreaEntity area, SalaryEntity salary, Experience experience, Schedule schedule,
-                             Employment employment, String description, EmployerEntity employer,
+    public VacancyHHruEntity(String idHHru, String name,
+                             Experience experience, Schedule schedule, Employment employment,
                              LocalDateTime datePublish, String url) {
         this.idHHru = idHHru;
         this.name = name;
-        this.programmingLanguageName = programmingLanguageName;
-        this.area = area;
-        this.salary = salary;
         this.experience = experience;
         this.schedule = schedule;
         this.employment = employment;
-        this.description = description;
-        this.employer = employer;
         this.datePublish = datePublish;
         this.url = url;
     }

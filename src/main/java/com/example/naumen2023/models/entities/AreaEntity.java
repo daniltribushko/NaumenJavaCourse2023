@@ -15,7 +15,6 @@ import java.util.Set;
 @Getter
 @Setter
 @ToString
-@EqualsAndHashCode
 @NoArgsConstructor
 @Table(name = "areas")
 public class AreaEntity {
@@ -29,7 +28,7 @@ public class AreaEntity {
     @Column(name = "name", nullable = false)
     private String name;
 
-    @OneToMany(mappedBy = "area", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "area", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private Set<VacancyHHruEntity> vacancies = new HashSet<>();
 
     public AreaEntity(String hhRuId, String name) {

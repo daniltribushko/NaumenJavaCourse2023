@@ -1,4 +1,4 @@
-package com.example.naumen2023.models.enums;
+package com.example.naumen2023.models.entities;
 
 import com.example.naumen2023.models.entities.VacancyHHruEntity;
 import jakarta.persistence.*;
@@ -14,9 +14,8 @@ import lombok.*;
 @Getter
 @Setter
 @ToString
-@EqualsAndHashCode
 @NoArgsConstructor
-@Table(name = "vacancies_hh_ru")
+@Table(name = "skills")
 public class SkillEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

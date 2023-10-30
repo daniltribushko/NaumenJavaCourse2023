@@ -36,7 +36,7 @@ public class EmployerEntity {
     @Column(name = "logo")
     private String logo;
 
-    @OneToMany(mappedBy = "employer", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "employer", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private Set<VacancyHHruEntity> vacancies = new HashSet<>();
 
     public EmployerEntity(String idHHru, String name, String url, String logo) {

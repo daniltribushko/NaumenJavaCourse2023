@@ -17,7 +17,6 @@ import java.util.Set;
 @Getter
 @Setter
 @ToString
-@EqualsAndHashCode
 @NoArgsConstructor
 @Table(name = "programmingLanguage")
 public class ProgrammingLanguageEntity {
@@ -32,7 +31,7 @@ public class ProgrammingLanguageEntity {
     @Column(name = "count_repositories", nullable = false)
     private Integer countRepositories;
 
-    @OneToMany(mappedBy = "programmingLanguage", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "programmingLanguage", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private Set<VacancyHHruEntity> vacancies = new HashSet<>();
 
     public ProgrammingLanguageEntity(ProgrammingLanguageName name) {
@@ -41,7 +40,7 @@ public class ProgrammingLanguageEntity {
     }
 
     public void addVacancies(VacancyHHruEntity vacancy) {
-        vacancy.setProgrammingLanguageName(this);
+        vacancy.setProgrammingLanguage(this);
         vacancies.add(vacancy);
     }
 }

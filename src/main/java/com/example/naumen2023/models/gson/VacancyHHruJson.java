@@ -36,15 +36,15 @@ public class VacancyHHruJson {
     @SerializedName("employment")
     private VacancyParameterId employment;
 
-    @SerializedName("skills")
+    @SerializedName("key_skills")
     private VacancyParameterName[] skills;
 
     @SerializedName("employer")
     private EmployerJson employer;
 
-    @SerializedName("date_publish")
+    @SerializedName("published_at")
     private String datePublish;
 
-    @SerializedName("url")
+    @SerializedName("alternate_url")
     private String url;
 }

@@ -21,18 +21,14 @@ public class SalaryEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "from")
+    @Column(name = "fromSalary")
     private Integer from;
 
-    @Column(name = "to")
+    @Column(name = "toSalary")
     private Integer to;
 
     @Column(name = "currency")
     private String currency;
-
-    @OneToOne
-    @JoinColumn(name = "vacancy_id", nullable = false)
-    private VacancyHHruEntity vacancy;
 
     public SalaryEntity(Integer from, Integer to, String currency) {
         this.from = from;
