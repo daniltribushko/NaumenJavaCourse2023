@@ -1,10 +1,25 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3" lang="ru">
 <head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
+    <link rel="stylesheet" type="text/css" href="/css/auth.css">
+    <meta charset="UTF-8">
+    <title>Регистрация</title>
 </head>
 <body>
-$END$
+    <form th:object="${user}" th:action="@{/registration}" method="post">
+        <h2>Регистрация</h2>
+        <div><label><input type="text" name="username" placeholder="Имя пользователя" class="input-narrow"/> </label></div>
+        <div><label><input type="password" id="password" name="password" placeholder="Пароль" class="input-narrow"/> </label></div>
+        <p id="passwordError" class="error-message"></p>
+        <div><label><input type="text" name="lastname" placeholder="Фамилия" class="input-narrow"/> </label></div>
+        <div><label><input type="text" name="firstname" placeholder="Имя" class="input-narrow"/> </label></div>
+        <div><label><input type="text" name="surname" placeholder="Отчество" class="input-narrow"/> </label></div>
+        <div><label><input type="email" name="email" placeholder="Email" class="input-narrow"/> </label></div>
+        <div><input type="submit" value="Зарегистрироваться" class="input-narrow, inputSubmit"/></div>
+            <div th:if="${message}"></div>
+            <div th:text="${message}" style="color: red; margin-top: 10px"></div>
+    </form>
+    <script src="/js/auth.js"></script>
 </body>
 </html>

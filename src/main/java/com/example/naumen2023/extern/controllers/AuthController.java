@@ -1,5 +1,7 @@
-package com.example.naumen2023.extern.services.users;
+package com.example.naumen2023.extern.controllers;
 
+import com.example.naumen2023.extern.entities.UserEntity;
+import com.example.naumen2023.extern.services.UserService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;

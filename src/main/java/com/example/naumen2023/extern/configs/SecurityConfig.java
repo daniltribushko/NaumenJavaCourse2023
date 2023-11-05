@@ -1,4 +1,4 @@
-package com.example.naumen2023.extern.services.users.configs;
+package com.example.naumen2023.extern.configs;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

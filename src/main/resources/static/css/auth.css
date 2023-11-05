@@ -24,3 +24,12 @@ input{
 h2{
     color: #FFFFFF;
 }
+
+.error-message {
+    color: red;
+    display: none;
+}
+
+.error-input {
+    border: 1px solid red;
+}

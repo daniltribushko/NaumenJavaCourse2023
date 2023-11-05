@@ -1,8 +1,9 @@
-package com.example.naumen2023.extern.services.users;
+package com.example.naumen2023.extern.entities;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
+import org.hibernate.annotations.Cascade;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -13,17 +14,18 @@ import java.util.Set;
 public class UserEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    public Long idUser;
+    private Long idUser;
 
-    public String firstname;
-    public String lastname;
-    public String surname;
-    public String username;
+    private String firstname;
+    private String lastname;
+    private String surname;
+    private String username;
     @Size(min = 8, message = "Минимальная длина пароля 8 символов")
-    public String password;
+    private String password;
 
-    @ElementCollection(targetClass = Roles.class, fetch = FetchType.EAGER)
     @CollectionTable(name = "user_role", joinColumns = @JoinColumn(name = "id_user"))
     @Enumerated(EnumType.STRING)
-    public Set<Roles> roles = new HashSet<>();
+    @Cascade(org.hibernate.annotations.CascadeType.ALL)
+    @ElementCollection(targetClass = Roles.class, fetch = FetchType.EAGER)
+    private Set<Roles> roles = new HashSet<>();
 }
