@@ -1,0 +1,26 @@
+body{
+    background-color: #1a1f25;
+}
+
+form{
+    text-align: center;
+    margin-top: 100px;
+}
+
+input{
+    margin-top: 10px;
+    height: 35px;
+    border-radius: 7px;
+}
+
+.input-narrow {
+    width: 15%;
+    padding-left: 10px;
+}
+.inputSubmit{
+    background-color: #e6b333;
+}
+
+h2{
+    color: #FFFFFF;
+}
