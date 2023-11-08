@@ -14,7 +14,8 @@ target/
 .sts4-cache
 
 ### IntelliJ IDEA ###
-/src/main/resources/secret.yaml
+/src/main/resources/secret.properties
+/src/main/resources/static/graphics
 .idea
 *.properties
 *.iws

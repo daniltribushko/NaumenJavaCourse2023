@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
+import java.net.MalformedURLException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -46,13 +47,15 @@ public class ProgrammingLanguageService{
      *
      * @param programmingLanguageName название языка программирования
      */
-    public void updateCountRepositories(ProgrammingLanguageName programmingLanguageName) {
+    public void updateCountRepositories(ProgrammingLanguageName programmingLanguageName) throws MalformedURLException,
+            InterruptedException {
         //Получаем сущность языка программирования
         ProgrammingLanguageEntity programmingLanguage = programmingLanguageRepository
                 .findByName(programmingLanguageName).orElse(null);
         //Если сущность присуствует, отправляем запрос на получение количества репозиториев и обновляем значение
         if (programmingLanguage != null) {
-            Integer count = GitHubParser.getCountRepositories(programmingLanguageName);
+            GitHubParser gitHubParser = new GitHubParser();
+            Integer count = gitHubParser.getCountRepositories(programmingLanguageName);
             if (count != -1) {
                 programmingLanguage.setCountRepositories(count);
                 programmingLanguageRepository.save(programmingLanguage);
