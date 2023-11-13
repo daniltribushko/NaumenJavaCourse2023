@@ -1,5 +1,6 @@
-package com.example.naumen2023.extern.entities;
+package com.example.naumen2023.entities;
 
+import com.example.naumen2023.entities.enums.Roles;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Size;
 import lombok.Data;

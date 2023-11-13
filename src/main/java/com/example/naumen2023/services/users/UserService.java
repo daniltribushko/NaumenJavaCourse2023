@@ -1,8 +1,8 @@
-package com.example.naumen2023.extern.services;
+package com.example.naumen2023.services.users;
 
-import com.example.naumen2023.extern.entities.Roles;
-import com.example.naumen2023.extern.entities.UserEntity;
-import com.example.naumen2023.extern.repositories.UserRepository;
+import com.example.naumen2023.entities.enums.Roles;
+import com.example.naumen2023.entities.UserEntity;
+import com.example.naumen2023.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;

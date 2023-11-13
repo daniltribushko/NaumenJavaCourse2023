@@ -1,6 +1,6 @@
-package com.example.naumen2023.extern.repositories;
+package com.example.naumen2023.repositories;
 
-import com.example.naumen2023.extern.entities.UserEntity;
+import com.example.naumen2023.entities.UserEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
