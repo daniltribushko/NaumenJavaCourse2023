@@ -1,7 +1,7 @@
 package com.example.naumen2023.services.users;
 
-import com.example.naumen2023.entities.enums.Roles;
-import com.example.naumen2023.entities.UserEntity;
+import com.example.naumen2023.models.enums.Roles;
+import com.example.naumen2023.models.entities.UserEntity;
 import com.example.naumen2023.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
