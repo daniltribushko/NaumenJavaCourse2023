@@ -1,6 +1,8 @@
 package com.example.naumen2023.services;
 
 import com.example.naumen2023.models.enums.ProgrammingLanguageName;
+import com.example.naumen2023.models.gson.AreaJson;
+import com.example.naumen2023.models.gson.EmployerJson;
 import com.example.naumen2023.models.gson.VacancyHHruJson;
 import com.example.naumen2023.services.graphics.GraphicsDrawer;
 import com.example.naumen2023.services.hh.ru.HHruParser;
@@ -11,10 +13,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.net.MalformedURLException;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 public class UpdaterScheduleService {
@@ -24,35 +23,46 @@ public class UpdaterScheduleService {
     @Autowired
 
     public UpdaterScheduleService(ProgrammingLanguageService programmingLanguageService,
-                                  GraphicsDrawer graphicsDrawer){
+                                  GraphicsDrawer graphicsDrawer) {
         this.programmingLanguageService = programmingLanguageService;
         this.graphicsDrawer = graphicsDrawer;
     }
 
     @Async
-    @Scheduled(cron = "0 52 20 * * *")
-    public void saveAllVacancies() {
+    @Scheduled(cron = "0 45 12 * * *")
+    public void saveAllVacancies() throws InterruptedException {
         HHruParser parser = new HHruParser();
         Map<ProgrammingLanguageName, List<VacancyHHruJson>> vacancies = new HashMap<>();
-        for (ProgrammingLanguageName programmingLanguageName : ProgrammingLanguageName.values()){
+        Set<EmployerJson> employers = new HashSet<>();
+        Set<AreaJson> areas = new HashSet<>();
+        for (ProgrammingLanguageName programmingLanguageName : ProgrammingLanguageName.values()) {
             List<VacancyHHruJson> vacanciesJson = parser.getAllVacanciesFromRussia(programmingLanguageName);
-            vacancies.put(programmingLanguageName, vacanciesJson);
+            List<VacancyHHruJson> rightVacancies = new ArrayList<>();
+            vacanciesJson.forEach(v -> {
+                        EmployerJson employerJson = v.getEmployer();
+                        AreaJson areaJson = v.getArea();
+                        if (employerJson != null && areaJson != null) {
+                            employers.add(v.getEmployer());
+                            areas.add(v.getArea());
+                            rightVacancies.add(v);
+                        }
+                    }
+            );
+            vacancies.put(programmingLanguageName, rightVacancies);
         }
-        for (Map.Entry<ProgrammingLanguageName, List<VacancyHHruJson>> vacancy : vacancies.entrySet()){
-            programmingLanguageService.addVacancies(vacancy.getKey(), vacancy.getValue());
+        programmingLanguageService.saveAreasAndEmployers(areas, employers);
+        for (Map.Entry<ProgrammingLanguageName, List<VacancyHHruJson>> vacancy : vacancies.entrySet()) {
+            programmingLanguageService.saveVacancies(vacancy.getKey(), vacancy.getValue());
+
         }
-    }
-    @Async
-    @Scheduled(cron = "0 11 22 * * *")
-    public void updateCountRepositories() throws MalformedURLException, InterruptedException {
-        for (ProgrammingLanguageName programmingLanguageName : ProgrammingLanguageName.values()){
-            programmingLanguageService.updateCountRepositories(programmingLanguageName);
-        }
+        graphicsDrawer.drawAllGraphics();
     }
 
     @Async
-    @Scheduled(cron = "0 56 19 * * *")
-    public void drawGraphics(){
-        graphicsDrawer.drawAllGraphics();
+    @Scheduled(cron = "0 41 23 * * *")
+    public void updateCountRepositories() throws MalformedURLException, InterruptedException {
+        for (ProgrammingLanguageName programmingLanguageName : ProgrammingLanguageName.values()) {
+            programmingLanguageService.updateCountRepositories(programmingLanguageName);
+        }
     }
 }

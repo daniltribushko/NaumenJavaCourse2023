@@ -11,7 +11,7 @@ import lombok.Getter;
 @Getter
 public enum ProgrammingLanguageName {
     JAVA("Java"),
-    GO("Golang"),
+    GO("Go","Golang"),
     KOTLIN("Kotlin"),
     SCALA("Scala"),
     C_SHARP("C#", "C%23"),

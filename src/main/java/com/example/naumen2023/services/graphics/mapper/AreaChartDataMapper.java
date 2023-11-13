@@ -1,6 +1,7 @@
 package com.example.naumen2023.services.graphics.mapper;
 
 import com.example.naumen2023.models.entities.AreaEntity;
+import com.example.naumen2023.services.graphics.interfaces.ChartDataMapper;
 import org.jfree.data.category.CategoryDataset;
 import org.jfree.data.category.DefaultCategoryDataset;
 import org.jfree.data.general.DefaultPieDataset;
@@ -11,10 +12,10 @@ import java.util.*;
 /**
  * @author Tribushko Danil
  * @since 03.11.2023
- *
+ * <p>
  * Создание датасетов для регионов
  */
-public class AreaChartDataMapper implements ChartDataMapper{
+public class AreaChartDataMapper implements ChartDataMapper {
     private List<AreaEntity> areas;
 
     public AreaChartDataMapper(List<AreaEntity> areas) {
@@ -53,7 +54,10 @@ public class AreaChartDataMapper implements ChartDataMapper{
         List<AreaEntity> sortedAreas = sortedAreasByCountVacancy(areas);
         Collections.reverse(sortedAreas);
         Map<String, Integer> dataArea = new HashMap<>();
-        areas.stream().limit(10).forEach(a -> dataArea.put(a.getName(), a.getVacancies().size()));
+        areas.stream().limit(10)
+                .forEach(a -> dataArea.put
+                        (a.getName(), a.getVacancies().size())
+                );
         int other = 0;
         for (int i = 10; i < areas.size(); i++) {
             other += areas.get(i).getVacancies().size();

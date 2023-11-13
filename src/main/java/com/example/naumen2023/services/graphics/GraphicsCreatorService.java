@@ -39,6 +39,7 @@ public class GraphicsCreatorService implements GraphicsCreatorInterface {
         try {
             Files.createFile(file.toPath());
             ChartUtils.saveChartAsPNG(file, chart, 500, 500);
+            log.info(fileName + ": saved");
             //Если такой график уже есть заменяем его на новый
         } catch (FileAlreadyExistsException e){
             deleteGraphics(graphicsType, fileName);
@@ -59,7 +60,6 @@ public class GraphicsCreatorService implements GraphicsCreatorInterface {
         File file = new File(url + "/" + graphicsType.toString().toLowerCase() + "/" + fileName + EXTENSION);
         try {
             Files.delete(file.toPath());
-            log.info(fileName + ": deleted");
         } catch (IOException e){
             log.warn(e.getMessage());
         }

@@ -57,7 +57,7 @@ public class VacancyHHruEntity {
     @Column(name = "employment", nullable = false)
     private Employment employment;
 
-    @OneToMany(mappedBy = "vacancy", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "vacancy", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<SkillEntity> skills = new ArrayList<>();
 
     @ManyToOne

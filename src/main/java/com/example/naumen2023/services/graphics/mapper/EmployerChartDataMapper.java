@@ -1,6 +1,7 @@
 package com.example.naumen2023.services.graphics.mapper;
 
 import com.example.naumen2023.models.entities.EmployerEntity;
+import com.example.naumen2023.services.graphics.interfaces.ChartDataMapper;
 import org.jfree.data.category.CategoryDataset;
 import org.jfree.data.category.DefaultCategoryDataset;
 import org.jfree.data.general.DefaultPieDataset;
@@ -53,12 +54,13 @@ public class EmployerChartDataMapper implements ChartDataMapper {
         List<EmployerEntity> sortedEmployers = sortedEmployersByCountVacancy(employers);
         Collections.reverse(sortedEmployers);
         Map<String, Integer> dataEmployer = new HashMap<>();
-        employers.stream().limit(10).forEach(e -> dataEmployer.put(e.getName(), e.getVacancies().size()));
-        int other = 0;
-        for (int i = 10; i < employers.size(); i++) {
-            other += employers.get(i).getVacancies().size();
-        }
-        dataEmployer.put("Другие", other);
+        employers.stream()
+                .limit(10)
+                .forEach(e -> dataEmployer
+                        .put(
+                                e.getName(),
+                                e.getVacancies().size())
+                );
         dataEmployer.forEach(dataset::setValue);
 
         return dataset;

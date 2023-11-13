@@ -10,9 +10,12 @@ import com.example.naumen2023.models.enums.ProgrammingLanguageName;
 import com.example.naumen2023.repositories.AreaRepository;
 import com.example.naumen2023.repositories.EmployerRepository;
 import com.example.naumen2023.repositories.ProgrammingLanguageRepository;
+import com.example.naumen2023.services.graphics.interfaces.AllProgrammingLanguagesChartDataMapperInterface;
 import com.example.naumen2023.services.graphics.interfaces.GraphicsCreatorInterface;
+import com.example.naumen2023.services.graphics.interfaces.ProgrammingLanguageChartDataMapper;
+import com.example.naumen2023.services.graphics.mapper.AllProgrammingLanguageChartDataMapper;
 import com.example.naumen2023.services.graphics.mapper.AreaChartDataMapper;
-import com.example.naumen2023.services.graphics.mapper.ChartDataMapper;
+import com.example.naumen2023.services.graphics.interfaces.ChartDataMapper;
 import com.example.naumen2023.services.graphics.mapper.EmployerChartDataMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
@@ -27,7 +30,7 @@ import java.util.Set;
 /**
  * @author Tribushko Danil
  * @since 05.11.2023
- * <p>
+ * <
  * Класс для отрисовки всех графиков и сохранение их в директорию
  */
 @Service
@@ -54,9 +57,11 @@ public class GraphicsDrawer {
     public void drawAllGraphics() {
         drawAreas();
         drawEmployersGraphics();
+        drawAllProgrammingLanguageGraphics();
         for (ProgrammingLanguageName programmingLanguageName : ProgrammingLanguageName.values()) {
             drawAreas(programmingLanguageName);
             drawEmployersGraphics(programmingLanguageName);
+            drawProgrammingLanguageGraphics(programmingLanguageName);
         }
     }
 
@@ -333,4 +338,107 @@ public class GraphicsDrawer {
         return new ArrayList<>(employers);
     }
 
+    /**
+     * Отрисовка графиков для определенного языка программирования
+     *
+     * @param programmingLanguageName название языка программирования
+     */
+    @Async
+    protected void drawProgrammingLanguageGraphics(ProgrammingLanguageName programmingLanguageName) {
+        ProgrammingLanguageEntity programmingLanguage = programmingLanguageRepository
+                .findByName(programmingLanguageName)
+                .orElse(null);
+        if (programmingLanguage != null) {
+            ChartDrawerService service = new ChartDrawerService();
+            GraphicsCreatorService graphicsCreatorService = new GraphicsCreatorService();
+            String name = programmingLanguageName.getName();
+            graphicsCreatorService.createGraphics(
+                    //Создаем chart
+                    service.createCategoryChart(
+                            GraphicsTitleAndFileName
+                                    .MOST_POPULAR_SKILLS
+                                    .getTitle() + " " + name,
+                            "Количество навыков",
+                            "Навыки",
+                            ProgrammingLanguageChartDataMapper.createDatasetMostPopularSkills(
+                                    programmingLanguageName,
+                                    programmingLanguage.getVacancies()
+                            )
+                    ),
+                    //Тип графика
+                    GraphicsType.VACANCIES,
+                    //Название файла
+                    "/" + name.toLowerCase() + "/" +
+                            GraphicsTitleAndFileName
+                                    .MOST_POPULAR_SKILLS
+                                    .getFileName() + "_" + name.toLowerCase()
+            );
+        }
+    }
+
+    @Async
+    protected void drawAllProgrammingLanguageGraphics() {
+        AllProgrammingLanguagesChartDataMapperInterface dataMapper = new AllProgrammingLanguageChartDataMapper(
+                programmingLanguageRepository.findAll()
+        );
+        ChartDrawerService service = new ChartDrawerService();
+        //Создание графика средней зарплаты
+        graphicsCreatorService.createGraphics(
+                service.createCategoryChart(
+                        GraphicsTitleAndFileName
+                                .PROGRAMMING_LANGUAGES_BY_MIDDLE_SALARY
+                                .getTitle(),
+                        "Зарплата",
+                        "Языки программирования",
+                        dataMapper.createDatasetByMiddleSalary()
+                ),
+                GraphicsType.VACANCIES,
+                GraphicsTitleAndFileName
+                        .PROGRAMMING_LANGUAGES_BY_MIDDLE_SALARY
+                        .getFileName()
+        );
+        //Создание графика самых популярных навыков
+        graphicsCreatorService.createGraphics(
+                service.createCategoryChart(
+                        GraphicsTitleAndFileName
+                                .MOST_POPULAR_SKILLS
+                                .getTitle(),
+                        "Количество навыков",
+                        "Навыки",
+                        dataMapper.createDatasetCountSkills()
+                ),
+                GraphicsType.VACANCIES,
+                GraphicsTitleAndFileName
+                        .MOST_POPULAR_SKILLS
+                        .getFileName()
+        );
+        //Создание графика количества вакансий среди языков программирования
+        graphicsCreatorService.createGraphics(
+                service.createCategoryChart(
+                        GraphicsTitleAndFileName
+                                .PROGRAMMING_LANGUAGES_BY_COUNT_VACANCIES
+                                .getTitle(),
+                        "Количество вакансий",
+                        "Языки программирования",
+                        dataMapper.createDatasetMostPopular()
+                ),
+                GraphicsType.VACANCIES,
+                GraphicsTitleAndFileName
+                        .PROGRAMMING_LANGUAGES_BY_COUNT_VACANCIES
+                        .getFileName()
+        );
+        //Создание графика распределения вакансий
+        graphicsCreatorService.createGraphics(
+                service.createPieChart(
+                        GraphicsTitleAndFileName
+                                .DISTRIBUTION_OF_VACANCIES_FROM_PROGRAMMING_LANGUAGES
+                                .getTitle(),
+                        dataMapper.createDatasetCountVacancies()
+                ),
+                GraphicsType.VACANCIES,
+                GraphicsTitleAndFileName
+                        .DISTRIBUTION_OF_VACANCIES_FROM_PROGRAMMING_LANGUAGES
+                        .getFileName()
+        );
+    }
 }
