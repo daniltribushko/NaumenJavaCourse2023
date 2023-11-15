@@ -1,16 +1,20 @@
-package com.example.naumen2023.extern.entities;
+package com.example.naumen2023.models.entities;
 
+import com.example.naumen2023.models.enums.Roles;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Size;
-import lombok.Data;
+import lombok.*;
 import org.hibernate.annotations.Cascade;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
 @Table(name = "user_entity")
 @Data
+@JsonIgnoreProperties({"articlesList"})
 public class UserEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -20,12 +24,15 @@ public class UserEntity {
     private String lastname;
     private String surname;
     private String username;
-    @Size(min = 8, message = "Минимальная длина пароля 8 символов")
     private String password;
+    private String email;
 
     @CollectionTable(name = "user_role", joinColumns = @JoinColumn(name = "id_user"))
     @Enumerated(EnumType.STRING)
     @Cascade(org.hibernate.annotations.CascadeType.ALL)
     @ElementCollection(targetClass = Roles.class, fetch = FetchType.EAGER)
     private Set<Roles> roles = new HashSet<>();
+
+    @OneToMany(mappedBy = "user",fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<ArticleEntity> articlesList = new ArrayList<>();
 }

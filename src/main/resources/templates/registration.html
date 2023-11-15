@@ -9,16 +9,53 @@
 <body>
     <form th:object="${user}" th:action="@{/registration}" method="post">
         <h2>Регистрация</h2>
-        <div><label><input type="text" name="username" placeholder="Имя пользователя" class="input-narrow"/> </label></div>
-        <div><label><input type="password" id="password" name="password" placeholder="Пароль" class="input-narrow"/> </label></div>
+
+        <div><label class="placeinput">
+            <input required="1" type="text" name="username" class="input-narrow"/>
+            <div class="place_holder">Никнейм<span> *</span></div>
+        </label></div>
+
+        <div><label class="placeinput">
+            <input required="1" type="password" id="password" name="password" class="input-narrow"/>
+            <div class="place_holder">Пароль<span> *</span></div>
+        </label></div>
         <p id="passwordError" class="error-message"></p>
-        <div><label><input type="text" name="lastname" placeholder="Фамилия" class="input-narrow"/> </label></div>
-        <div><label><input type="text" name="firstname" placeholder="Имя" class="input-narrow"/> </label></div>
-        <div><label><input type="text" name="surname" placeholder="Отчество" class="input-narrow"/> </label></div>
-        <div><label><input type="email" name="email" placeholder="Email" class="input-narrow"/> </label></div>
+
+        <div><label class="placeinput">
+            <input required="1" type="password" id="passwordConfirm" name="confirmPass" class="input-narrow"/>
+            <div class="place_holder">Подтверждение пароля<span> *</span></div>
+        </label></div>
+        <p id="passwordErrorConfirm" class="error-message"></p>
+
+        <div><label class="placeinput">
+            <input required="1" type="text" name="lastname" class="input-narrow"/>
+            <div class="place_holder">Фамилия<span> *</span></div>
+        </label></div>
+
+        <div><label class="placeinput">
+            <input required="1" type="text" name="firstname" class="input-narrow"/>
+            <div class="place_holder">Имя<span> *</span></div>
+        </label></div>
+
+        <div><label class="placeinput">
+            <input required="1" type="text" name="surname" class="input-narrow"/>
+            <div class="place_holder">Отчество</div>
+        </label></div>
+
+        <div><label class="placeinput">
+            <input required="1" type="email" name="email" class="input-narrow"/>
+            <div class="place_holder">Emal<span> *</span></div>
+        </label></div>
+
         <div><input type="submit" value="Зарегистрироваться" class="input-narrow, inputSubmit"/></div>
             <div th:if="${message}"></div>
             <div th:text="${message}" style="color: red; margin-top: 10px"></div>
+            <div th:if="${confirmPassErr}"></div>
+            <div th:text="${confirmPassErr}" style="color: red; margin-top: 10px"></div>
+            <div th:if="${lengthPassErr}"></div>
+            <div th:text="${lengthPassErr}" style="color: red; margin-top: 10px"></div>
+<!--            <div th:errors="*{password}"-->
+<!--               th:if="${#fields.hasErrors('password')}"></div>-->
     </form>
     <script src="/js/auth.js"></script>
 </body>

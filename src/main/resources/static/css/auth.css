@@ -1,28 +1,37 @@
 body{
-    background-color: #1a1f25;
+    background-color: #eeeeee;
 }
 
 form{
     text-align: center;
-    margin-top: 100px;
+    margin-top: 48px;
 }
 
 input{
     margin-top: 10px;
-    height: 35px;
-    border-radius: 7px;
+    height: 45px;
+    border-radius: .25rem;
+    width: 15%;
 }
 
 .input-narrow {
-    width: 15%;
     padding-left: 10px;
+    border: 1px solid rgba(0,0,0,.15);
 }
 .inputSubmit{
-    background-color: #e6b333;
+    background-color: #007bff;
+    color: #FEFEFF;
+    font-family: inherit;
+    border-radius: .3rem;
+    border-color: #007bff;
+    font-size: 1.25rem;
 }
 
 h2{
-    color: #FFFFFF;
+    color: inherit;
+    font-size: 2rem;
+    font-family: inherit;
+    line-height: 0.5;
 }
 
 .error-message {
@@ -32,4 +41,28 @@ h2{
 
 .error-input {
     border: 1px solid red;
+}
+
+.place_holder {
+    z-index: 100;
+    left: 10px;
+    cursor: text;
+    position: absolute;
+    top: 1px;
+    width: 100%;
+    display: none;
+    color: lightgrey;
+    text-align: left;
+}
+
+.placeinput input:invalid + .place_holder {
+    display: inline;
+}
+
+.placeinput {
+    position: relative;
+    overflow: hidden;
+}
+.place_holder span {
+    color: #e80c0c;
 }
