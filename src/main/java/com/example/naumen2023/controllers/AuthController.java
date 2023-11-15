@@ -16,6 +16,11 @@ public class AuthController {
         this.userService = userService;
     }
 
+    @RequestMapping("/login")
+    public String login(){
+        return "login";
+    }
+
     @GetMapping("/registration")
     public String registration(Model model){
         model.addAttribute("user", new UserEntity());
@@ -36,7 +41,8 @@ public class AuthController {
             }
             try{
                 userService.addUser(user);
-                return "redirect:/login";
+                model.addAttribute("successfullyRegistered", "Вы успешно зарегистрировались!");
+                return "registration";
             }
             catch (Exception e){
                 model.addAttribute("message", "Пользователь с таким логином уже существует!");

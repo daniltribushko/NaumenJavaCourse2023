@@ -1,11 +1,5 @@
 package com.example.naumen2023.services.users;
 
-<<<<<<<< HEAD:src/main/java/com/example/naumen2023/services/UserService.java
-package com.example.naumen2023.services;
-========
-package com.example.naumen2023.services.users;
->>>>>>>> 5c42a25f0812efc17363843262ec76e2ebf789f2:src/main/java/com/example/naumen2023/services/users/UserService.java
-
 import com.example.naumen2023.models.enums.Roles;
 import com.example.naumen2023.models.entities.UserEntity;
 import com.example.naumen2023.repositories.UserRepository;
