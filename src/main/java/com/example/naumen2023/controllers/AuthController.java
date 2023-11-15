@@ -1,7 +1,7 @@
 package com.example.naumen2023.controllers;
 
 import com.example.naumen2023.models.entities.UserEntity;
-import com.example.naumen2023.services.UserService;
+import com.example.naumen2023.services.users.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

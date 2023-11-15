@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta xmlns:th="https://www.thymeleaf.org" charset="UTF-8">
+    <title>Статистика по языкам программирования</title>
+</head>
+<body>
+<main>
+    <form class="form-get-graphics" th:object="${request}"
+          method="get" action="/statistics/graphics">
+        <select th:field="*{programmingLanguageName}" id="programmingLanguageName">
+            <option th:each="pl:${programmingLanguages}" th:text="${pl.name()}" th:value="${pl}"></option>
+        </select>
+        <select th:field="*{graphicsType}" id="graphicType">
+            <option th:each="graphicType:${graphicsType}" th:text="${graphicsType}"
+                    th:value="${graphicsType}">
+            </option>
+        </select>
+        <select th:field="*{getGraphicsSubType()}" id="subType">
+            <option th:each="graphicSubType:${graphicsSubType}" th:text="${graphicsSubType}"
+                    th:value="${graphicsSubType}">
+            </option>
+        </select>
+        <input type="submit" value="Получить">
+    </form>
+    <div class="graphic">
+        <h3 th:text="${graphic}"></h3>
+        <img th:src="@{${graphic.getUrl()}}">
+
+    </div>
+</main>
+</body>
+</html>

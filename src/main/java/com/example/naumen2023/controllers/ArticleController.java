@@ -4,7 +4,7 @@ import com.example.naumen2023.models.entities.ArticleEntity;
 import com.example.naumen2023.models.enums.Statuses;
 import com.example.naumen2023.models.entities.UserEntity;
 import com.example.naumen2023.repositories.UserRepository;
-import com.example.naumen2023.services.ArticleService;
+import com.example.naumen2023.services.articles.ArticleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;

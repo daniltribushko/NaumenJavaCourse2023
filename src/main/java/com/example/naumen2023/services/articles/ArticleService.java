@@ -1,4 +1,4 @@
-package com.example.naumen2023.services;
+package com.example.naumen2023.services.articles;
 
 import com.example.naumen2023.models.entities.ArticleEntity;
 import com.example.naumen2023.models.entities.UserEntity;
