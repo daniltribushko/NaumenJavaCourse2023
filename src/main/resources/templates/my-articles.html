@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="UTF-8">
+    <title>Мои статьи</title>
+</head>
+<body>
+    <div th:each="article: ${articles}">
+        <h2 th:value="*{article.getTitle()}"></h2>
+        <p th:value="*{article.getBody()}"></p>
+    </div>
+</body>
+</html>
