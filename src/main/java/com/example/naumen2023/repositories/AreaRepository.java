@@ -7,4 +7,5 @@ import java.util.Optional;
 
 public interface AreaRepository extends JpaRepository<AreaEntity, Long> {
     Optional<AreaEntity> findByHhRuId(String hhRuId);
+    Optional<AreaEntity> findByName(String name);
 }

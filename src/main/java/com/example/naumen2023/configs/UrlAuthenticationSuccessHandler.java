@@ -15,7 +15,7 @@ import org.springframework.security.web.authentication.AuthenticationSuccessHand
 import java.io.IOException;
 import java.util.Collection;
 
-public class urlAuthenticationSuccessHandler implements AuthenticationSuccessHandler {
+public class UrlAuthenticationSuccessHandler implements AuthenticationSuccessHandler {
     protected Log logger = LogFactory.getLog(this.getClass());
 
     private final RedirectStrategy redirectStrategy = new DefaultRedirectStrategy();
@@ -55,7 +55,7 @@ public class urlAuthenticationSuccessHandler implements AuthenticationSuccessHan
         }
 
         if (isUser) {
-            return "/statistics/graphics";
+            return "/statistics";
         }
 //      else if (isModerator) {
 //          return "";

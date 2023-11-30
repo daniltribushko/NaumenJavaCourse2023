@@ -36,4 +36,24 @@ public enum ProgrammingLanguageName {
         this.name = name;
         this.urlName = urlName;
     }
+
+    public static ProgrammingLanguageName mapFromString(String string){
+        ProgrammingLanguageName result;
+        switch (string.toLowerCase()){
+            case "java" -> result = JAVA;
+            case "go" -> result = GO;
+            case "kotlin" -> result = KOTLIN;
+            case "scala" -> result = SCALA;
+            case "c#" -> result = C_SHARP;
+            case "c++" -> result = C_PLUS;
+            case "lua" -> result = LUA;
+            case "rust" -> result = RUST;
+            case "php" -> result = PHP;
+            case "javascript" -> result = JAVASCRIPT;
+            case "typescript" -> result = TYPESCRIPT;
+            case "python" -> result = PYTHON;
+            default -> result = null;
+        }
+        return result;
+    }
 }
