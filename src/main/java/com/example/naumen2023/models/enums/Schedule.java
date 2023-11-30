@@ -1,21 +1,30 @@
 package com.example.naumen2023.models.enums;
 
+import lombok.Getter;
+
 /**
  * График работы
  *
  * @author Tribushko Danil
  * @since 26.10.2023
  */
+@Getter
 public enum Schedule {
-    FULL_DAY,
+    FULL_DAY("Полный день"),
     //Сменный график
-    SHIFT,
+    SHIFT("Сменный график"),
     //Гибкий график
-    FLEXIBLE,
+    FLEXIBLE("Гибкий график"),
     //Удаленная работа
-    REMOTE,
+    REMOTE("Удаленная работа"),
     //Вахтовый метод
-    FLY_IN_FLY_OUT;
+    FLY_IN_FLY_OUT("Вахтовый метод");
+
+    private final String ruName;
+
+    Schedule(String ruName){
+        this.ruName = ruName;
+    }
 
     public static Schedule getScheduleFromString(String schedule){
         Schedule result;

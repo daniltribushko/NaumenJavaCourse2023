@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org" >
+<head>
+    <meta charset="UTF-8">
+    <title>Статистика по языкам программирования</title>
+</head>
+<body>
+<main>
+    <form class="form-get-graphics"
+          method="get" action="/statistics/vacancies" autocomplete="off">
+        <select name="programmingLanguageName">
+            <option value="" disabled selected>
+                Выберите язык программирования
+            </option>
+            <option th:each="pl:${progrmmingLanguages}" th:value="${pl.getName()}" th:text="${pl.getName()}"/>
+        </select>
+        <input type="text" name="employer" placeholder="Введите работодателя"/>
+        <input type="text" name="area" placeholder="Введите регион"/>
+        <select name="experience">
+            <option value="" disabled selected>
+                Выберите опыт работы
+            </option>
+            <option th:each="e:${experience}" th:value="${e}" th:text="${e.getRuName()}"/>
+        </select>
+        <select name="employment">
+            <option value="" disabled selected>
+                Выберите тип занятости
+            </option>
+            <option th:each="em:${employment}" th:value="${em}" th:text="${em.getRuName()}"/>
+        </select>
+        <select name="schedule">
+            <option value="" disabled selected>
+                Выберите график работы
+            </option>
+            <option th:each="s:${schedule}" th:value="${s}" th:text="${s.getRuName()}"/>
+        </select>
+        <input type="number" min="1" name="fromSalary" placeholder="Выберите значение зарплаты от"/>
+        <input type="number" min="2" name="toSalary" placeholder="Выберите значение зарплаты до"/>
+        <input type="number" min="0" name="page" placeholder="Введите номер страницы"/>
+        <input type="number" min="1" name="count" placeholder="Введите количество вакансий"/>
+        <input type="submit" value="Получить">
+    </form>
+    <div th:each="vacancy:${vacancies}">
+        <p th:text="${vacancy.name}"/>
+    </div>
+</main>
+</body>
+</html>

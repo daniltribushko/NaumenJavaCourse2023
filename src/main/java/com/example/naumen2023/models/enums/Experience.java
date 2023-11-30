@@ -1,16 +1,25 @@
 package com.example.naumen2023.models.enums;
 
+import lombok.Getter;
+
 /**
  * Опыт работы
  *
  * @author Tribushko Danil
  * @since 26.10.2023
  */
+@Getter
 public enum Experience {
-    NO_EXPERIENCE,
-    BETWEEN_1_AND_3,
-    BETWEEN_3_AND_6,
-    MORE_THAN_6;
+    NO_EXPERIENCE("Без опыта работы"),
+    BETWEEN_1_AND_3("От 1 до 3 лет"),
+    BETWEEN_3_AND_6("От 3 до 6 лет"),
+    MORE_THAN_6("От 6 лет");
+
+    private final String ruName;
+
+    Experience(String ruName){
+        this.ruName = ruName;
+    }
 
     public static Experience getExperienceFromString(String experience){
         Experience result;

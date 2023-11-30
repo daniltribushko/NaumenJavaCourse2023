@@ -3,6 +3,7 @@ package com.example.naumen2023.controllers;
 import com.example.naumen2023.models.dto.response.GetVacanciesResponseDto;
 import com.example.naumen2023.models.enums.Employment;
 import com.example.naumen2023.models.enums.Experience;
+import com.example.naumen2023.models.enums.ProgrammingLanguageName;
 import com.example.naumen2023.models.enums.Schedule;
 import com.example.naumen2023.services.vacancies.VacanciesService;
 import jakarta.validation.constraints.Min;
@@ -31,6 +32,15 @@ public class StatisticsController {
         this.vacanciesService = vacanciesService;
     }
 
+    @GetMapping("")
+    public String viewMainPage(Model model){
+        model.addAttribute("progrmmingLanguages", ProgrammingLanguageName.values());
+        model.addAttribute("schedule", Schedule.values());
+        model.addAttribute("experience", Experience.values());
+        model.addAttribute("employment", Employment.values());
+        return "statistics";
+    }
+
     @GetMapping("/vacancies")
     public String getVacancies(
             Model model,
@@ -49,6 +59,7 @@ public class StatisticsController {
             @Min(value = 1, message = "Count can't be less than 1")
             Integer count
     ) {
+        model.addAttribute("progrmmingLanguages", ProgrammingLanguageName.values());
         model.addAttribute("schedule", Schedule.values());
         model.addAttribute("experience", Experience.values());
         model.addAttribute("employment", Employment.values());
@@ -66,7 +77,7 @@ public class StatisticsController {
                 PageRequest.of(page, count))
         );
 
-        return "vacancies";
+        return "statistics";
     }
 
 }
