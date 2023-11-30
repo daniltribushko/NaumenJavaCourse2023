@@ -7,6 +7,7 @@ import lombok.Data;
 import org.hibernate.annotations.Cascade;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Data
@@ -15,7 +16,7 @@ import java.util.Set;
 public class TeamEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int idTeam;
+    private Long idTeam;
     private String name;
     private String description;
     private String ChatURL;
@@ -26,8 +27,10 @@ public class TeamEntity {
     @ElementCollection(targetClass = Roles.class, fetch = FetchType.EAGER)
     private Set<ProgrammingLanguageName> languages = new HashSet<>();
 
-    @OneToOne
-    @JoinColumn(name = "id_user", nullable = false)
-    private UserEntity leader;
+    @OneToMany(mappedBy = "team")
+    @Cascade(org.hibernate.annotations.CascadeType.ALL)
+    private List<UserEntity> participants;
+
+    private Long idLeader;
 
 }

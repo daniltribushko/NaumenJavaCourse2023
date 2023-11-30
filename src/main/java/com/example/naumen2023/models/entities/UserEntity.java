@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.Cascade;
+import org.springframework.lang.Nullable;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -35,6 +36,9 @@ public class UserEntity {
     @OneToMany(mappedBy = "user",fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<ArticleEntity> articlesList = new ArrayList<>();
 
-    @OneToOne(mappedBy = "leader")
+    @ManyToOne
+    @JoinColumn(name = "id_team")
     private TeamEntity team;
+
+    private String teamStatus;
 }

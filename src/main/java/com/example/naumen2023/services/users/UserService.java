@@ -55,4 +55,20 @@ public class UserService implements UserDetailsService {
     private List<? extends GrantedAuthority> mapRolesToAthorities(Set<Roles> roles){
         return roles.stream().map(r -> new SimpleGrantedAuthority("ROLE_" + r.name())).collect(Collectors.toList());
     }
+
+
+    public UserEntity findByUsername(String username) {
+        return userRepository.findByUsername(username);
+    }
+
+    public void addTeam(UserEntity user, String status) {
+        UserEntity userEntity = userRepository.findByUsername(user.getUsername());
+        userEntity.setTeam(user.getTeam());
+        userEntity.setTeamStatus(status);
+        userRepository.save(userEntity);
+    }
+
+    public void leaveTeam(UserEntity user) {
+        userRepository.findByUsername(user.getUsername()).setTeam(null);
+    }
 }
