@@ -19,7 +19,6 @@ public class UserEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idUser;
-
     private String firstname;
     private String lastname;
     private String surname;
@@ -35,4 +34,7 @@ public class UserEntity {
 
     @OneToMany(mappedBy = "user",fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<ArticleEntity> articlesList = new ArrayList<>();
+
+    @OneToOne(mappedBy = "leader")
+    private TeamEntity team;
 }
