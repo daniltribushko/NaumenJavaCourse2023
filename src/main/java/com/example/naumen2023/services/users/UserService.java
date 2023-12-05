@@ -1,5 +1,6 @@
 package com.example.naumen2023.services.users;
 
+import com.example.naumen2023.models.entities.TeamEntity;
 import com.example.naumen2023.models.enums.Roles;
 import com.example.naumen2023.models.entities.UserEntity;
 import com.example.naumen2023.repositories.UserRepository;
@@ -61,14 +62,16 @@ public class UserService implements UserDetailsService {
         return userRepository.findByUsername(username);
     }
 
-    public void addTeam(UserEntity user, String status) {
-        UserEntity userEntity = userRepository.findByUsername(user.getUsername());
-        userEntity.setTeam(user.getTeam());
-        userEntity.setTeamStatus(status);
-        userRepository.save(userEntity);
+    public void addTeam(UserEntity user, TeamEntity team, String status) {
+        user.setTeamStatus(status);
+        user.setTeam(team);
+        if (status.equals("лидер")) team.setIdLeader(user.getIdUser());
+        userRepository.save(user);
     }
 
     public void leaveTeam(UserEntity user) {
-        userRepository.findByUsername(user.getUsername()).setTeam(null);
+        user.setTeam(null);
+        user.setTeamStatus(null);
+        userRepository.save(user);
     }
 }

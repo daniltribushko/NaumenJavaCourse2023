@@ -31,7 +31,7 @@ public class TeamService {
         teamRepository.delete(team);
     }
 
-    public TeamEntity findByName(String name) {
-        return teamRepository.findByName(name);
+    public TeamEntity findById(int id){
+        return teamRepository.findById(id).orElse(null);
     }
 }

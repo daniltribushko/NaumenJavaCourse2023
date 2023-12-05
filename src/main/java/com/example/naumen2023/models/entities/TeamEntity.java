@@ -28,7 +28,6 @@ public class TeamEntity {
     private Set<ProgrammingLanguageName> languages = new HashSet<>();
 
     @OneToMany(mappedBy = "team")
-    @Cascade(org.hibernate.annotations.CascadeType.ALL)
     private List<UserEntity> participants;
 
     private Long idLeader;

@@ -26,26 +26,18 @@ public class TeamController {
     }
     @PostMapping("/create")
     public String createTeam(@ModelAttribute("team") @Valid TeamEntity teamEntity,
-                             @AuthenticationPrincipal UserDetails user,
-
-                             BindingResult bindingResult){
+                             @AuthenticationPrincipal UserDetails user){
         UserEntity leader =  userService.findByUsername(user.getUsername());
-        teamEntity.setIdLeader(leader.getIdUser());
-        leader.setTeam(teamEntity);
-
         teamService.save(teamEntity);
-        userService.addTeam(leader, "leader");
-
+        userService.addTeam(leader, teamEntity, "лидер");
         return "redirect:/profile";
     }
 
-    @PostMapping("/addUser")
-    public String addUser(@ModelAttribute("oneTeam") TeamEntity teamEntity,
-                          @AuthenticationPrincipal UserDetails userDetails){
+    @PostMapping("/addUser/{id}")
+    public String addUser(@PathVariable("id") int idTeam, @AuthenticationPrincipal UserDetails userDetails){
+        TeamEntity teamEntity = teamService.findById(idTeam);
         UserEntity user =  userService.findByUsername(userDetails.getUsername());
-        TeamEntity team = teamService.findByName(teamEntity.getName());
-        user.setTeam(team);
-        userService.addTeam(user, "участник");
+        userService.addTeam(user, teamEntity, "участник");
         return "redirect:/profile";
     }
 
