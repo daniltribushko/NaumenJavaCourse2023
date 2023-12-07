@@ -20,8 +20,10 @@ public class TeamService {
         teamRepository.save(teamEntity);
     }
 
-    public List<TeamEntity> getAll() {
-        return teamRepository.findAll();
+    public List<TeamEntity> getAll(List<TeamEntity> teamEntities) {
+        List<TeamEntity> teams = teamRepository.findAll();
+        teams.removeAll(teamEntities);
+        return teams;
     }
 
     public void delete(TeamEntity team) {

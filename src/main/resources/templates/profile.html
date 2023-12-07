@@ -29,6 +29,23 @@
             <input type="hidden" th:name="${_csrf.getParameterName()}" th:value="${_csrf.getToken()}">
             <input th:if="${user.getTeamStatus() != 'leader'}" type="submit" value="Выйти из команды"/>
         </form>
+        <div>
+            <h2>Заявки на вступление:</h2>
+            <div th:each="oneUser : ${user.getTeam().getRequests()}">
+                <p th:text="${'ФИО: ' + oneUser.getLastname() + oneUser.getFirstname() + oneUser.getSurname()}"></p>
+                <p th:text="${'Почта: ' + oneUser.getEmail()}"></p>
+                <p th:text="${'Язык программирования: ' + oneUser.getProgrammingLanguage()}"></p>
+                <form  th:method="POST" th:action="@{/team/accept/{id}(id=${oneUser.getIdUser()})}">
+                    <input type="hidden" th:name="${_csrf.getParameterName()}" th:value="${_csrf.getToken()}">
+                    <input type="submit" value="Принять"/>
+                </form>
+                <form  th:method="DELETE" th:action="@{/team/reject/{id}(id=${oneUser.getIdUser()})}">
+                    <input type="hidden" th:name="${_csrf.getParameterName()}" th:value="${_csrf.getToken()}">
+                    <input type="submit" value="Отклонить"/>
+                </form>
+                <p>_______________________________________</p>
+            </div>
+        </div>
     </div>
 
     <div th:if="${user.getTeam() == null}">
@@ -49,11 +66,24 @@
         </div>
         <h3>Вступить в команду: </h3>
         <div th:each="oneTeam : ${allTeams}">
-            <form th:method="POST" th:action="@{/teams/addUser/{id}(id=${oneTeam.getIdTeam()})}" >
+            <form th:method="POST" th:if="${oneTeam.getIdTeam() != user.getTeam().getIdTeam()}" th:action="@{/teams/addUser/{id}(id=${oneTeam.getIdTeam()})}" >
                 <input type="hidden" th:name="${_csrf.getParameterName()}" th:value="${_csrf.getToken()}">
                 <p th:text="${'Название команды: ' + oneTeam.name}"></p>
                 <p th:text="${'Описание команды: ' + oneTeam.description}"></p>
-                <input type="submit" value="Вступить!"/>
+                <label for="programmingLanguage">Укажите ваш язык программирования: </label>
+                <input type="text" id="programmingLanguage" name="programmingLanguage"/>
+                <input type="submit" value="Подать заявку на вступление"/>
+                <p>______________________________________________________</p>
+            </form>
+
+        </div>
+        <h3>Отправленные запросы: </h3>
+        <div th:each="oneTeam : ${user.getRequests()}">
+            <form th:method="POST" th:if="${oneTeam.getIdTeam() == user.getTeam().getIdTeam()}" th:action="@{/teams/leave}">
+                <input type="hidden" th:name="${_csrf.getParameterName()}" th:value="${_csrf.getToken()}">
+                <p th:text="${'Название команды: ' + oneTeam.name}"></p>
+                <p th:text="${'Описание команды: ' + oneTeam.description}"></p>
+                <input th:color="red" type="submit" value="Отменить заявку на вступление"/>
                 <p>______________________________________________________</p>
             </form>
         </div>

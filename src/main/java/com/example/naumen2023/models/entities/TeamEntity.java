@@ -4,6 +4,7 @@ import com.example.naumen2023.models.enums.ProgrammingLanguageName;
 import com.example.naumen2023.models.enums.Roles;
 import jakarta.persistence.*;
 import lombok.Data;
+import org.apache.catalina.User;
 import org.hibernate.annotations.Cascade;
 
 import java.util.HashSet;
@@ -29,6 +30,17 @@ public class TeamEntity {
 
     @OneToMany(mappedBy = "team")
     private List<UserEntity> participants;
+
+    @ManyToMany
+    @JoinTable(name = "user_request_table",
+            joinColumns = {
+                    @JoinColumn(name = "id_team", referencedColumnName = "idTeam")
+            },
+            inverseJoinColumns = {
+                    @JoinColumn(name = "id_user", referencedColumnName = "idUser")
+            }
+    )
+    private List<UserEntity> requests;
 
     private Long idLeader;
 

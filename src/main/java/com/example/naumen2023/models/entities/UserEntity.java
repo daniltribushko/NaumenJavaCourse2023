@@ -40,5 +40,12 @@ public class UserEntity {
     @JoinColumn(name = "id_team")
     private TeamEntity team;
 
+    @ManyToMany(mappedBy = "requests")
+    private List<TeamEntity> requests;
+
+    private String programmingLanguage;
+
     private String teamStatus;
+
+
 }

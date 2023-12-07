@@ -8,6 +8,7 @@ import com.example.naumen2023.services.users.UserService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -34,10 +35,28 @@ public class TeamController {
     }
 
     @PostMapping("/addUser/{id}")
-    public String addUser(@PathVariable("id") int idTeam, @AuthenticationPrincipal UserDetails userDetails){
+    public String addUser(@PathVariable("id") int idTeam,
+                          @AuthenticationPrincipal UserDetails userDetails,
+                          @RequestParam String programmingLanguage){
         TeamEntity teamEntity = teamService.findById(idTeam);
         UserEntity user =  userService.findByUsername(userDetails.getUsername());
+        user.setProgrammingLanguage(programmingLanguage);
         userService.addTeam(user, teamEntity, "участник");
+        return "redirect:/profile";
+    }
+
+    @PostMapping("/accept/{id}")
+    public String acceptInTeam(@PathVariable("id") int idUser, @AuthenticationPrincipal UserDetails userDetails){
+        UserEntity user = userService.findById(idUser);
+        UserEntity leader =  userService.findByUsername(userDetails.getUsername());
+        user.setTeam(leader.getTeam());
+        userService.save(user);
+        return "redirect:/profile";
+    }
+
+    @DeleteMapping("/reject/{id}")
+    public String rejectInTeam(@PathVariable("id") int idUser){
+        userService.leaveTeam(userService.findById(idUser));
         return "redirect:/profile";
     }
 

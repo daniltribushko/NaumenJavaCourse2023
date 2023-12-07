@@ -29,7 +29,7 @@ public class ProfileController {
         TeamEntity teamEntity = userEntity.getTeam();
         model.addAttribute("user", userEntity);
         model.addAttribute("team", new TeamEntity());
-        model.addAttribute("allTeams", teamService.getAll());
+        model.addAttribute("allTeams", teamService.getAll(userEntity.getRequests()));
         return "profile";
     }
 }
