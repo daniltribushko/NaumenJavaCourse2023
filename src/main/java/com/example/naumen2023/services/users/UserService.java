@@ -68,16 +68,19 @@ public class UserService implements UserDetailsService {
         return userRepository.findByIdUser((long) id);
     }
 
-    public void addTeam(UserEntity user, TeamEntity team, String status) {
-        user.setTeamStatus(status);
+    public void addTeam(UserEntity user, TeamEntity team) {
         user.setTeam(team);
-        if (status.equals("лидер")) team.setIdLeader(user.getIdUser());
         userRepository.save(user);
     }
 
     public void leaveTeam(UserEntity user) {
         user.setTeam(null);
         user.setTeamStatus(null);
+        userRepository.save(user);
+    }
+
+    public void cancelRequest(UserEntity user, TeamEntity team){
+        user.getRequests().remove(team);
         userRepository.save(user);
     }
 }

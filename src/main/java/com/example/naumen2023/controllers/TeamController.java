@@ -20,6 +20,7 @@ public class TeamController {
     private final TeamService teamService;
     private final UserService userService;
 
+
     @Autowired
     public TeamController(TeamService teamService, UserService userService) {
         this.teamService = teamService;
@@ -29,21 +30,39 @@ public class TeamController {
     public String createTeam(@ModelAttribute("team") @Valid TeamEntity teamEntity,
                              @AuthenticationPrincipal UserDetails user){
         UserEntity leader =  userService.findByUsername(user.getUsername());
-        teamService.save(teamEntity);
-        userService.addTeam(leader, teamEntity, "лидер");
+
+        teamService.createTeam(leader, teamEntity);
+        userService.addTeam(leader, teamEntity);
         return "redirect:/profile";
     }
 
-    @PostMapping("/addUser/{id}")
-    public String addUser(@PathVariable("id") int idTeam,
+    @PostMapping("/delete")
+    private String deleteTeam(@AuthenticationPrincipal UserDetails user){
+        UserEntity leader =  userService.findByUsername(user.getUsername());
+        teamService.delete(leader.getTeam());
+        return "redirect:/profile";
+    }
+
+    @PostMapping("/sendRequest/{id}")
+    public String sendRequest(@PathVariable("id") int idTeam,
                           @AuthenticationPrincipal UserDetails userDetails,
                           @RequestParam String programmingLanguage){
         TeamEntity teamEntity = teamService.findById(idTeam);
         UserEntity user =  userService.findByUsername(userDetails.getUsername());
         user.setProgrammingLanguage(programmingLanguage);
-        userService.addTeam(user, teamEntity, "участник");
+        userService.addTeam(user, teamEntity);
         return "redirect:/profile";
     }
+
+    @PostMapping("/cancel/{id}")
+    public String cancelRequest(@AuthenticationPrincipal UserDetails userDetails,
+                                @PathVariable("id") int idTeam){
+        UserEntity user =  userService.findByUsername(userDetails.getUsername());
+        userService.cancelRequest(user, teamService.findById(idTeam));
+        return "redirect:/profile";
+    }
+
+    
 
     @PostMapping("/accept/{id}")
     public String acceptInTeam(@PathVariable("id") int idUser, @AuthenticationPrincipal UserDetails userDetails){
@@ -64,13 +83,6 @@ public class TeamController {
     public String leaveTeam(@AuthenticationPrincipal UserDetails userDetails){
         UserEntity user =  userService.findByUsername(userDetails.getUsername());
         userService.leaveTeam(user);
-        return "redirect:/profile";
-    }
-
-    @PostMapping("/delete")
-    private String deleteTeam(@AuthenticationPrincipal UserDetails user){
-        UserEntity leader =  userService.findByUsername(user.getUsername());
-        teamService.delete(leader.getTeam());
         return "redirect:/profile";
     }
 

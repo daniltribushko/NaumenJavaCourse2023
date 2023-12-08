@@ -66,7 +66,7 @@
         </div>
         <h3>Вступить в команду: </h3>
         <div th:each="oneTeam : ${allTeams}">
-            <form th:method="POST" th:if="${oneTeam.getIdTeam() != user.getTeam().getIdTeam()}" th:action="@{/teams/addUser/{id}(id=${oneTeam.getIdTeam()})}" >
+            <form th:method="POST" th:action="@{/teams/sendRequest/{id}(id=${oneTeam.getIdTeam()})}" >
                 <input type="hidden" th:name="${_csrf.getParameterName()}" th:value="${_csrf.getToken()}">
                 <p th:text="${'Название команды: ' + oneTeam.name}"></p>
                 <p th:text="${'Описание команды: ' + oneTeam.description}"></p>
@@ -79,7 +79,7 @@
         </div>
         <h3>Отправленные запросы: </h3>
         <div th:each="oneTeam : ${user.getRequests()}">
-            <form th:method="POST" th:if="${oneTeam.getIdTeam() == user.getTeam().getIdTeam()}" th:action="@{/teams/leave}">
+            <form th:method="POST" th:action="@{/teams/cancel/{id}(id=${oneTeam.getIdTeam()})}">
                 <input type="hidden" th:name="${_csrf.getParameterName()}" th:value="${_csrf.getToken()}">
                 <p th:text="${'Название команды: ' + oneTeam.name}"></p>
                 <p th:text="${'Описание команды: ' + oneTeam.description}"></p>

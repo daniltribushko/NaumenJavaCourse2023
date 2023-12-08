@@ -7,6 +7,7 @@ import lombok.Data;
 import org.apache.catalina.User;
 import org.hibernate.annotations.Cascade;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -29,9 +30,11 @@ public class TeamEntity {
     private Set<ProgrammingLanguageName> languages = new HashSet<>();
 
     @OneToMany(mappedBy = "team")
+    @Cascade({org.hibernate.annotations.CascadeType.MERGE, org.hibernate.annotations.CascadeType.PERSIST})
     private List<UserEntity> participants;
 
     @ManyToMany
+    @Cascade({org.hibernate.annotations.CascadeType.MERGE, org.hibernate.annotations.CascadeType.PERSIST})
     @JoinTable(name = "user_request_table",
             joinColumns = {
                     @JoinColumn(name = "id_team", referencedColumnName = "idTeam")
@@ -40,7 +43,7 @@ public class TeamEntity {
                     @JoinColumn(name = "id_user", referencedColumnName = "idUser")
             }
     )
-    private List<UserEntity> requests;
+    private List<UserEntity> requests = new ArrayList<>();
 
     private Long idLeader;
 

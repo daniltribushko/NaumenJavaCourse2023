@@ -41,7 +41,7 @@ public class UserEntity {
     private TeamEntity team;
 
     @ManyToMany(mappedBy = "requests")
-    private List<TeamEntity> requests;
+    private List<TeamEntity> requests = new ArrayList<>();
 
     private String programmingLanguage;
 
