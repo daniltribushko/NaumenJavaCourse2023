@@ -18,8 +18,13 @@
         <p th:text="${'Описание команды: ' + user.getTeam().description}"></p>
         <p>Состав команды: </p>
         <div th:each="participant : ${user.getTeam().getParticipants()}">
-            <p th:if="${participant.getTeamStatus() == 'лидер'}" th:text="${participant.username + ' (лидер)'}"></p>
-            <p th:if="${participant.getTeamStatus() != 'лидер'}" th:text="${participant.username}"></p>
+            <p th:if="${participant.getTeamStatus() == 'leader'}" th:text="${participant.username + ' (лидер)'}"></p>
+            <p th:if="${participant.getTeamStatus() != 'leader'}" th:text="${participant.username}"></p>
+            <form th:method="POST" th:if="${user.getTeamStatus() == 'leader'} and ${participant.getTeamStatus() != 'leader'}"
+                  th:action="@{/teams/leave{username}(username=${participant.getUsername()})}">
+                <input type="hidden" th:name="${_csrf.getParameterName()}" th:value="${_csrf.getToken()}">
+                <input type="submit" value="Выгнать из команды"/>
+            </form>
         </div>
         <form th:method="POST"  th:if="${user.getTeamStatus() == 'leader'}" th:action="@{/teams/delete}">
             <input type="hidden" th:name="${_csrf.getParameterName()}" th:value="${_csrf.getToken()}">
@@ -27,7 +32,7 @@
         </form>
         <form th:method="POST" th:if="${user.getTeamStatus() != 'leader'}" th:action="@{/teams/leave}">
             <input type="hidden" th:name="${_csrf.getParameterName()}" th:value="${_csrf.getToken()}">
-            <input th:if="${user.getTeamStatus() != 'leader'}" type="submit" value="Выйти из команды"/>
+            <input  type="submit" value="Выйти из команды"/>
         </form>
         <div>
             <h2>Заявки на вступление:</h2>
@@ -35,11 +40,11 @@
                 <p th:text="${'ФИО: ' + oneUser.getLastname() + oneUser.getFirstname() + oneUser.getSurname()}"></p>
                 <p th:text="${'Почта: ' + oneUser.getEmail()}"></p>
                 <p th:text="${'Язык программирования: ' + oneUser.getProgrammingLanguage()}"></p>
-                <form  th:method="POST" th:action="@{/team/accept/{id}(id=${oneUser.getIdUser()})}">
+                <form  th:method="POST" th:action="@{/teams/accept/{username}(username=${oneUser.getUsername()})}">
                     <input type="hidden" th:name="${_csrf.getParameterName()}" th:value="${_csrf.getToken()}">
                     <input type="submit" value="Принять"/>
                 </form>
-                <form  th:method="DELETE" th:action="@{/team/reject/{id}(id=${oneUser.getIdUser()})}">
+                <form  th:method="DELETE" th:action="@{/teams/reject/{username}(username=${oneUser.getUsername()})}">
                     <input type="hidden" th:name="${_csrf.getParameterName()}" th:value="${_csrf.getToken()}">
                     <input type="submit" value="Отклонить"/>
                 </form>

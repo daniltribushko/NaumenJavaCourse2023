@@ -31,7 +31,7 @@ public class TeamEntity {
 
     @OneToMany(mappedBy = "team")
     @Cascade({org.hibernate.annotations.CascadeType.MERGE, org.hibernate.annotations.CascadeType.PERSIST})
-    private List<UserEntity> participants;
+    private List<UserEntity> participants = new ArrayList<>();
 
     @ManyToMany
     @Cascade({org.hibernate.annotations.CascadeType.MERGE, org.hibernate.annotations.CascadeType.PERSIST})

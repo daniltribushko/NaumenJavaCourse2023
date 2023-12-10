@@ -57,30 +57,9 @@ public class UserService implements UserDetailsService {
         return roles.stream().map(r -> new SimpleGrantedAuthority("ROLE_" + r.name())).collect(Collectors.toList());
     }
 
-    public void save(UserEntity userEntity){
-        userRepository.save(userEntity);
-    }
     public UserEntity findByUsername(String username) {
         return userRepository.findByUsername(username);
     }
 
-    public UserEntity findById(int id){
-        return userRepository.findByIdUser((long) id);
-    }
 
-    public void addTeam(UserEntity user, TeamEntity team) {
-        user.setTeam(team);
-        userRepository.save(user);
-    }
-
-    public void leaveTeam(UserEntity user) {
-        user.setTeam(null);
-        user.setTeamStatus(null);
-        userRepository.save(user);
-    }
-
-    public void cancelRequest(UserEntity user, TeamEntity team){
-        user.getRequests().remove(team);
-        userRepository.save(user);
-    }
 }

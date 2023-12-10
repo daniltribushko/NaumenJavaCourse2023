@@ -38,6 +38,7 @@ public class UserEntity {
 
     @ManyToOne
     @JoinColumn(name = "id_team")
+
     private TeamEntity team;
 
     @ManyToMany(mappedBy = "requests")
