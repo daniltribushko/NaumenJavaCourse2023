@@ -24,12 +24,6 @@ public class ArticleController {
         this.userRepository = userRepository;
     }
 
-    @ResponseBody
-    @GetMapping("/articles/{id}")
-    public List<ArticleEntity> getAllArticlesById(@PathVariable Long id){
-       return articleService.getAllArticlesById(id);
-    }
-
     @GetMapping("/create-article")
     public String createArticle(){
         return "create-article";
@@ -38,17 +32,49 @@ public class ArticleController {
     @PostMapping("/create-article")
     public String createArticle(ArticleEntity article, @AuthenticationPrincipal UserDetails userDetails){
         UserEntity user = userRepository.findByUsername(userDetails.getUsername());
-        article.setUser(user);
-        article.setStatus(Statuses.UNDER_REVIEW.toString());
-        articleService.createArticle(article);
+            article.setUser(user);
+            article.setStatus(Statuses.UNDER_REVIEW.toString());
+            System.out.println(article.getBody());
+            articleService.createArticle(article);
         return "create-article";
     }
 
-    @GetMapping("my-articles")
+    @PostMapping("/update-article")
+    public String updateArticle(ArticleEntity article){
+        ArticleEntity articleEntity = articleService.getArticleById(article.getId());
+        articleEntity.setTitle(article.getTitle());
+        articleEntity.setBody(article.getBody());
+        articleService.createArticle(articleEntity);
+        return "redirect:/my-articles";
+    }
+
+    @GetMapping("/my-articles")
     public String getArticlesCurrentUser(Model model, @AuthenticationPrincipal UserDetails userDetails){
         UserEntity user = userRepository.findByUsername(userDetails.getUsername());
-        List<ArticleEntity> articles = user.getArticlesList();
+        List<ArticleEntity> articles = articleService.getAllArticlesByUser(user);
         model.addAttribute("articles", articles);
         return "my-articles";
+    }
+
+    @GetMapping("/my-article")
+    public String getMyArticle(Model model, @RequestParam long idArticle){
+        ArticleEntity article = articleService.getArticleById(idArticle);
+        model.addAttribute("article", article);
+        return "my-article";
+    }
+
+    @GetMapping("/update")
+    public String updateArticle(Model model, @RequestParam long idArticle){
+        ArticleEntity article = articleService.getArticleById(idArticle);
+        model.addAttribute("title", article.getTitle());
+        model.addAttribute("body", article.getBody());
+        model.addAttribute("idArticle", article.getId());
+        return "update-article";
+    }
+
+    @PostMapping("/delete")
+    public String deleteArticle(@RequestParam long idArticle){
+        articleService.deleteArticle(idArticle);
+        return "redirect:/my-articles";
     }
 }

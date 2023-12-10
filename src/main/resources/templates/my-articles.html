@@ -1,14 +1,27 @@
 <!DOCTYPE html>
-<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<html lang="ru" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
 <head>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta charset="UTF-8">
     <title>Мои статьи</title>
 </head>
 <body>
-    <div th:each="article: ${articles}">
-        <h2 th:value="*{article.getTitle()}"></h2>
-        <p th:value="*{article.getBody()}"></p>
-    </div>
+<h1>Мои статьи</h1>
+        <table style="font-size: 2em">
+            <tr th:each="article: ${articles}">
+            <td><a th:href="@{/my-article(idArticle=${article.getId()})}" th:text="${article.getTitle()}"></a></td>
+                <td>
+                    <form th:action="@{/delete}" method="post">
+                    <button class="btn btn-danger" style="text-align: center" type="submit" name="idArticle" th:value="*{article.getId()}">Удалить</button>
+                    </form>
+                </td>
+                <td>
+                    <form th:action="@{/update}" method="get">
+                        <button class="btn btn-warning" style="text-align: center" type="submit" name="idArticle" th:value="*{article.getId()}">Изменить</button>
+                    </form>
+                </td>
+            </tr>
+        </table>
 </body>
 </html>
