@@ -1,0 +1,38 @@
+h1, h2, h3{
+    margin-top: 0;
+}
+
+body{
+    background-color: #EEEEEE;
+    font-family: 'Inter', sans-serif;
+}
+
+.lk{
+    padding: 10px;
+    border: dashed black;
+    width: 475px;
+    margin-bottom: 20px;
+}
+
+.in-team, .not-in-team{
+    display: flex;
+}
+
+.request, .team, .make-team, .request-in-team, .requested-in-team{
+    width: 500px;
+    align-self: flex-start;
+    padding: 10px;
+    border: dashed black;
+    margin: 5px;
+}
+
+.deprecated-label{
+    margin-top: 10px;
+}
+
+.description {
+    width: 90%;
+    height: 100px;
+    resize: vertical;
+    margin-bottom: 10px;
+}
