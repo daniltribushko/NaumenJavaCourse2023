@@ -20,6 +20,7 @@
             <h3>Ваша команда: </h3>
             <p th:text="${'Назавание команды: ' + user.getTeam().name}"></p>
             <p th:text="${'Описание команды: ' + user.getTeam().description}"></p>
+            <a th:text="${'Сслыка на командный чат'}" th:href="${user.getTeam().getChatURL()}"></a>
             <p>Состав команды: </p>
             <div th:each="participant : ${user.getTeam().getParticipants()}">
                 <p th:if="${participant.getTeamStatus() == 'leader'}" th:text="${participant.username + ' (лидер)'}"></p>
@@ -71,7 +72,10 @@
                 <label class="deprecated-label" for="description">Введите описание команды: </label>
                 <input  class="description" type="text" th:field="*{description}" id="description"/>
                 <div style="color:red" th:if="${#fields.hasErrors('description')}" th:errors="*{description}">Description Error</div>
-
+                <br/>
+                <label class="url-label" for="url">Введите ссылку на чат: </label>
+                <input  class="url" type="text" th:field="*{chatURL}" id="url"/>
+                <div style="color:red" th:if="${#fields.hasErrors('chatURL')}" th:errors="*{chatURL}">URL Error</div>
                 <input type="submit" value="Создать"/>
             </form>
         </div>
