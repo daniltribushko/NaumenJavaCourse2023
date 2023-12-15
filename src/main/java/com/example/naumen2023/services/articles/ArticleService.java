@@ -3,9 +3,11 @@ package com.example.naumen2023.services.articles;
 import com.example.naumen2023.models.entities.ArticleEntity;
 import com.example.naumen2023.models.entities.UserEntity;
 import com.example.naumen2023.repositories.ArticleRepository;
-import com.example.naumen2023.repositories.UserRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
@@ -44,5 +46,9 @@ public class ArticleService {
     }
     public ArticleEntity getArticleById(Long id){
        return articleRepository.findArticleEntityById(id);
+    }
+    public Page<ArticleEntity> getAllArticles(Integer page, Integer size, UserEntity user){
+        Pageable pageable = PageRequest.of(page, size);
+        return articleRepository.findByUserNot(user, pageable);
     }
 }

@@ -24,7 +24,6 @@
                     var file = this.files[0];
                     var formData = new FormData();
                     formData.append('file', file);
-
                     fetch('/upload-image', {
                         method: 'POST',
                         body: formData,

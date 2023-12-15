@@ -10,7 +10,7 @@
 <h1>Мои статьи</h1>
         <table style="font-size: 2em">
             <tr th:each="article: ${articles}">
-            <td><a th:href="@{/my-article(idArticle=${article.getId()})}" th:text="${article.getTitle()}"></a></td>
+            <td><a th:href="@{/article(idArticle=${article.getId()})}" th:text="${article.getTitle()}"></a></td>
                 <td>
                     <form th:action="@{/delete}" method="post">
                     <button class="btn btn-danger" style="text-align: center" type="submit" name="idArticle" th:value="*{article.getId()}">Удалить</button>
