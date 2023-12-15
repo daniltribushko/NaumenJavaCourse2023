@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.Cascade;
+import org.springframework.lang.Nullable;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -19,7 +20,6 @@ public class UserEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idUser;
-
     private String firstname;
     private String lastname;
     private String surname;
@@ -35,4 +35,18 @@ public class UserEntity {
 
     @OneToMany(mappedBy = "user",fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<ArticleEntity> articlesList = new ArrayList<>();
+
+    @ManyToOne
+    @JoinColumn(name = "id_team")
+
+    private TeamEntity team;
+
+    @ManyToMany(mappedBy = "requests")
+    private List<TeamEntity> requests = new ArrayList<>();
+
+    private String programmingLanguage;
+
+    private String teamStatus;
+
+
 }

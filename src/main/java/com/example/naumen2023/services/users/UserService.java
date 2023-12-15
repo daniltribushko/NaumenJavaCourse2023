@@ -1,5 +1,6 @@
 package com.example.naumen2023.services.users;
 
+import com.example.naumen2023.models.entities.TeamEntity;
 import com.example.naumen2023.models.enums.Roles;
 import com.example.naumen2023.models.entities.UserEntity;
 import com.example.naumen2023.repositories.UserRepository;
@@ -55,4 +56,10 @@ public class UserService implements UserDetailsService {
     private List<? extends GrantedAuthority> mapRolesToAthorities(Set<Roles> roles){
         return roles.stream().map(r -> new SimpleGrantedAuthority("ROLE_" + r.name())).collect(Collectors.toList());
     }
+
+    public UserEntity findByUsername(String username) {
+        return userRepository.findByUsername(username);
+    }
+
+
 }
