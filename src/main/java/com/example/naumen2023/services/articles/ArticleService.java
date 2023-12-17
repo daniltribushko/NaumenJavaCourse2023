@@ -9,10 +9,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-
-import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
+
 
 @Service
 public class ArticleService {
@@ -44,11 +42,24 @@ public class ArticleService {
     public void deleteArticle(Long id){
         articleRepository.delete(articleRepository.findArticleEntityById(id));
     }
+
     public ArticleEntity getArticleById(Long id){
        return articleRepository.findArticleEntityById(id);
     }
-    public Page<ArticleEntity> getAllArticles(Integer page, Integer size, UserEntity user){
+
+    public Page<ArticleEntity> getAllArticles(Integer page, Integer size, String status, UserEntity user){
         Pageable pageable = PageRequest.of(page, size);
-        return articleRepository.findByUserNot(user, pageable);
+        return articleRepository.findByUserNotAndStatus(user, status, pageable);
+    }
+
+    public List<ArticleEntity> getArticlesByStatus(String status){
+        return articleRepository.findArticleEntityByStatus(status);
+    }
+
+    public boolean editArticleStatus(String status, long idArticle){
+        ArticleEntity article = articleRepository.findArticleEntityById(idArticle);
+        article.setStatus(status);
+        articleRepository.save(article);
+        return true;
     }
 }

@@ -24,6 +24,7 @@ public class SecurityConfig {
                         .requestMatchers("/css/**").permitAll()
                         .requestMatchers("/js/**").permitAll()
                         .requestMatchers("/statistics/graphics").permitAll()
+                        .requestMatchers("/moderator/**").hasRole("MODERATOR")
                         .anyRequest().authenticated())
                 .formLogin(form -> form
                     .loginPage("/login")

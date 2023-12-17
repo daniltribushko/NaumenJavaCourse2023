@@ -69,7 +69,8 @@ public class ArticleController {
     public String getAllArticles(@RequestParam(defaultValue = "0") @Min(0) Integer page,
                                  Model model, @AuthenticationPrincipal UserDetails userDetails){
         UserEntity user = userRepository.findByUsername(userDetails.getUsername());
-        Page<ArticleEntity> articlesPage = articleService.getAllArticles(page, 1, user);
+        Page<ArticleEntity> articlesPage = articleService.getAllArticles(page, 1,
+                Statuses.PUBLISHED.toString(), user);
         int totalPages = articlesPage.getTotalPages();
         int maxPagesToShow = 3;
         int startPage;
@@ -107,6 +108,12 @@ public class ArticleController {
     @PostMapping("/delete")
     public String deleteArticle(@RequestParam long idArticle){
         articleService.deleteArticle(idArticle);
+        return "redirect:/my-articles";
+    }
+
+    @PostMapping("/resend")
+    public String resendArticle(@RequestParam long idArticle){
+        articleService.editArticleStatus(Statuses.UNDER_REVIEW.toString(),idArticle);
         return "redirect:/my-articles";
     }
 }

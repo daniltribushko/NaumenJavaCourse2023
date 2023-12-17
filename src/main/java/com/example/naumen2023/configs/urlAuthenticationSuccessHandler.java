@@ -40,7 +40,7 @@ public class urlAuthenticationSuccessHandler implements AuthenticationSuccessHan
 
     protected String determineTargetUrl(Authentication authentication) {
         boolean isUser = false;
-        //boolean isModerator = false;
+        boolean isModerator = false;
         Collection<? extends GrantedAuthority> authorities
                 = authentication.getAuthorities();
         for (GrantedAuthority grantedAuthority : authorities) {
@@ -48,18 +48,18 @@ public class urlAuthenticationSuccessHandler implements AuthenticationSuccessHan
                 isUser = true;
                 break;
             }
-//          else if (grantedAuthority.getAuthority().equals("ROLE_MODERATOR")) {
-//              isModerator= true;
-//              break;
-//          }
+          else if (grantedAuthority.getAuthority().equals("ROLE_MODERATOR")) {
+              isModerator= true;
+              break;
+          }
         }
 
         if (isUser) {
-            return "/statistics/graphics";
+            return "/profile";
         }
-//      else if (isModerator) {
-//          return "";
-//      }
+      else if (isModerator) {
+          return "/moderator/articles";
+      }
         else {
             throw new IllegalStateException();
         }

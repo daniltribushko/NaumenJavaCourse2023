@@ -21,10 +21,10 @@ public class SalaryEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "fromSalary")
+    @Column(name = "from_salary")
     private Integer from;
 
-    @Column(name = "toSalary")
+    @Column(name = "to_salary")
     private Integer to;
 
     @Column(name = "currency")

@@ -22,16 +22,12 @@ public class ImageUploadController {
         @PostMapping("/upload-image")
         public ResponseEntity<Map<String, String>> handleImageUpload(@RequestParam("file") MultipartFile file) {
             try {
-                // Логика сохранения файла и получения URL
                 String imageUrl = imageService.saveImage(file);
-
-                // Возвращаем JSON-объект с URL изображения
                 Map<String, String> response = new HashMap<>();
                 response.put("url", imageUrl);
 
                 return ResponseEntity.ok().body(response);
             } catch (IOException e) {
-                // Обработка ошибок
                 e.printStackTrace();
                 Map<String, String> errorResponse = new HashMap<>();
                 errorResponse.put("error", "Ошибка сервера");

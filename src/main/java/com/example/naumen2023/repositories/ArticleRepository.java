@@ -14,5 +14,6 @@ import java.util.List;
 public interface ArticleRepository extends JpaRepository<ArticleEntity, Long> {
     List<ArticleEntity> findArticleEntityByUser(UserEntity user);
     ArticleEntity findArticleEntityById(Long id);
-    Page<ArticleEntity> findByUserNot(UserEntity user, Pageable pageable);
+    List<ArticleEntity> findArticleEntityByStatus(String status);
+    Page<ArticleEntity> findByUserNotAndStatus(UserEntity user, String status, Pageable pageable);
 }

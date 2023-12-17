@@ -5,20 +5,44 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta charset="UTF-8">
     <title>Мои статьи</title>
+    <style>
+        .ur{
+            color: #ff8800;
+        }
+        .pub{
+            color: green;
+        }
+        .rej{
+            color: #e80c0c
+        }
+        .table-cell{
+            padding-right: 10px;
+        }
+    </style>
 </head>
 <body>
 <h1>Мои статьи</h1>
         <table style="font-size: 2em">
             <tr th:each="article: ${articles}">
-            <td><a th:href="@{/article(idArticle=${article.getId()})}" th:text="${article.getTitle()}"></a></td>
-                <td>
+                <td class="table-cell">
+                    <span class="ur" th:if="${article.getStatus() == 'UNDER_REVIEW'}">На проверке</span>
+                    <span class="pub" th:if="${article.getStatus() == 'PUBLISHED'}">Опубликована</span>
+                    <span class="rej" th:if="${article.getStatus() == 'REJECTED'}">Отклонена</span>
+                </td>
+            <td class="table-cell"><a th:href="@{/article(idArticle=${article.getId()})}" th:text="${article.getTitle()}"></a></td>
+                <td class="table-cell">
                     <form th:action="@{/delete}" method="post">
                     <button class="btn btn-danger" style="text-align: center" type="submit" name="idArticle" th:value="*{article.getId()}">Удалить</button>
                     </form>
                 </td>
-                <td>
+                <td class="table-cell">
                     <form th:action="@{/update}" method="get">
                         <button class="btn btn-warning" style="text-align: center" type="submit" name="idArticle" th:value="*{article.getId()}">Изменить</button>
+                    </form>
+                </td>
+                <td class="table-cell" th:if="${article.getStatus() == 'REJECTED'}">
+                    <form th:action="@{/resend}" method="post">
+                        <button class="btn btn-primary" style="text-align: center" type="submit" name="idArticle" th:value="*{article.getId()}">Отправить повторно</button>
                     </form>
                 </td>
             </tr>

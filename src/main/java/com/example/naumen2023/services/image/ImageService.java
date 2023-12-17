@@ -21,31 +21,17 @@ public class ImageService {
     }
 
     public String saveImage(MultipartFile file) throws IOException {
-        // Получаем путь к директории static/images
         String uploadDir = "src/main/resources/static/images";
-
-        // Создаем путь к директории
         Path uploadPath = Path.of(uploadDir).toAbsolutePath().normalize();
-
-        // Убеждаемся, что директория существует
         Files.createDirectories(uploadPath);
-
-        // Генерируем уникальное имя файла
         String fileName = System.currentTimeMillis() + "-" + Objects.requireNonNull(file.getOriginalFilename()).replaceAll(" ", "_");
-
-        // Создаем путь к файлу
         Path filePath = uploadPath.resolve(fileName);
-
-        // Копируем файл в целевую директорию
         Files.copy(file.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
-
-        // Возвращаем URL сохраненного изображения
-        return "/images/" + fileName;
+        return "src/main/resources/static/images/" + fileName;
     }
 
     public Resource loadImageAsResource(String fileName) throws IOException {
-        // Получаем путь к файлу
-        Path filePath = Path.of("static/images").resolve(fileName).normalize();
+        Path filePath = Path.of("src/main/resources/static/images").resolve(fileName).normalize();
         Resource resource = resourceLoader.getResource("file:" + filePath.toAbsolutePath().toString());
 
         if (resource.exists()) {

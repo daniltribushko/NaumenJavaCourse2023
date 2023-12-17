@@ -18,7 +18,7 @@ import java.util.Set;
 @Setter
 @ToString
 @NoArgsConstructor
-@Table(name = "programmingLanguage")
+@Table(name = "programming_language")
 public class ProgrammingLanguageEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
