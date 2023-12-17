@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Профиль</title>
+    <link rel="stylesheet" href="/css/profile.css" type="text/css" th:href="@{/css/profile.css}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;600&family=Poppins:wght@300;600&family=Roboto:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="lk">
+        <h2>Личный кабинет:</h2>
+        <p th:text="${'Имя пользователя: ' + user.getUsername()}"></p>
+        <p th:text="${'ФИО: ' + user.getLastname() + ' ' + user.getFirstname() + ' ' +user.getSurname()}"></p>
+        <p th:text="${'Адрес электронной почты: ' + user.email}"></p>
+    </div>
+    <div class="in-team" th:if="${user.getTeam() != null}">
+        <div class="team">
+            <h3>Ваша команда: </h3>
+            <p th:text="${'Назавание команды: ' + user.getTeam().name}"></p>
+            <p th:text="${'Описание команды: ' + user.getTeam().description}"></p>
+            <a th:text="${'Сслыка на командный чат'}" th:href="${user.getTeam().getChatURL()}"></a>
+            <p>Состав команды: </p>
+            <div th:each="participant : ${user.getTeam().getParticipants()}">
+                <p th:if="${participant.getTeamStatus() == 'leader'}" th:text="${participant.username + ' (лидер)'}"></p>
+                <p th:if="${participant.getTeamStatus() != 'leader'}" th:text="${participant.username}"></p>
+                <form th:method="POST" th:if="${user.getTeamStatus() == 'leader'} and ${participant.getTeamStatus() != 'leader'}"
+                      th:action="@{/teams/leave{username}(username=${participant.getUsername()})}">
+                    <input type="hidden" th:name="${_csrf.getParameterName()}" th:value="${_csrf.getToken()}">
+                    <input type="submit" value="Выгнать из команды"/>
+                </form>
+            </div>
+            <form th:method="POST"  th:if="${user.getTeamStatus() == 'leader'}" th:action="@{/teams/delete}">
+                <input type="hidden" th:name="${_csrf.getParameterName()}" th:value="${_csrf.getToken()}">
+                <input  type="submit" value="Распустить команду"/>
+            </form>
+            <form th:method="POST" th:if="${user.getTeamStatus() != 'leader'}" th:action="@{/teams/leave}">
+                <input type="hidden" th:name="${_csrf.getParameterName()}" th:value="${_csrf.getToken()}">
+                <input  type="submit" value="Выйти из команды"/>
+            </form>
+        </div>
+        <div class="request">
+            <h3>Заявки на вступление:</h3>
+            <div th:each="oneUser : ${user.getTeam().getRequests()}">
+                <p th:text="${'ФИО: ' + oneUser.getLastname() + oneUser.getFirstname() + oneUser.getSurname()}"></p>
+                <p th:text="${'Почта: ' + oneUser.getEmail()}"></p>
+                <p th:text="${'Язык программирования: ' + oneUser.getProgrammingLanguage()}"></p>
+                <form  th:method="POST" th:action="@{/teams/accept/{username}(username=${oneUser.getUsername()})}">
+                    <input type="hidden" th:name="${_csrf.getParameterName()}" th:value="${_csrf.getToken()}">
+                    <input type="submit" value="Принять"/>
+                </form>
+                <form  th:method="DELETE" th:action="@{/teams/reject/{username}(username=${oneUser.getUsername()})}">
+                    <input type="hidden" th:name="${_csrf.getParameterName()}" th:value="${_csrf.getToken()}">
+                    <input type="submit" value="Отклонить"/>
+                </form>
+                <br>
+                <p>____________________________________________________</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="not-in-team" th:if="${user.getTeam() == null}">
+        <div class="make-team">
+            <h3>Создание команды:</h3>
+            <form th:method="POST" th:action="@{/teams/create}" th:object="${team}">
+                <input type="hidden" th:name="${_csrf.getParameterName()}" th:value="${_csrf.getToken()}">
+                <label for="name">Введите название команды: </label>
+                <input type="text" th:field="*{name}" id="name"/>
+                <div style="color:red" th:if="${#fields.hasErrors('name')}" th:errors="*{name}">Name Error</div>
+                <br/>
+                <label class="deprecated-label" for="description">Введите описание команды: </label>
+                <input  class="description" type="text" th:field="*{description}" id="description"/>
+                <div style="color:red" th:if="${#fields.hasErrors('description')}" th:errors="*{description}">Description Error</div>
+                <br/>
+                <label class="url-label" for="url">Введите ссылку на чат: </label>
+                <input  class="url" type="text" th:field="*{chatURL}" id="url"/>
+                <div style="color:red" th:if="${#fields.hasErrors('chatURL')}" th:errors="*{chatURL}">URL Error</div>
+                <input type="submit" value="Создать"/>
+            </form>
+        </div>
+        <div class="request-in-team" >
+            <h3>Вступить в команду: </h3>
+            <form th:each="oneTeam : ${allTeams}" th:method="POST" th:action="@{/teams/sendRequest/{id}(id=${oneTeam.getIdTeam()})}" >
+                <input type="hidden" th:name="${_csrf.getParameterName()}" th:value="${_csrf.getToken()}">
+                <p th:text="${'Название команды: ' + oneTeam.name}"></p>
+                <p th:text="${'Описание команды: ' + oneTeam.description}"></p>
+                <label for="programmingLanguage">Укажите ваш язык программирования: </label>
+                <input type="text" id="programmingLanguage" name="programmingLanguage"/>
+                <input type="submit" value="Подать заявку на вступление"/>
+                <br>
+                <p>____________________________________________________</p>
+            </form>
+        </div>
+        <div class="requested-in-team" >
+            <h3>Отправленные запросы: </h3>
+            <form th:each="oneTeam : ${user.getRequests()}" th:method="POST" th:action="@{/teams/cancel/{id}(id=${oneTeam.getIdTeam()})}">
+                <input type="hidden" th:name="${_csrf.getParameterName()}" th:value="${_csrf.getToken()}">
+                <p th:text="${'Название команды: ' + oneTeam.name}"></p>
+                <p th:text="${'Описание команды: ' + oneTeam.description}"></p>
+                <input th:color="red" type="submit" value="Отменить заявку на вступление"/>
+                <br>
+                <p>____________________________________________________</p>
+            </form>
+        </div>
+    </div>
+    <style>
+        select {
+            display: block;
+        }
+    </style>
+</body>
+</html>
