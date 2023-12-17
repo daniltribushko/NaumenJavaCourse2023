@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org" xmlns:c="http://www.w3.org/1999/XSL/Transform">
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1" name="viewport">
+    <title>Ошибка аутентификации</title>
+</head>
+<body>
+<div class="container" style="display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 50vh;">
+    <div class="row mt-5">
+        <div class="col-6 mx-auto">
+            <h1 style="font-size:35px; text-align: center">Access Denied</h1>
+            <p style="font-size:25px">У вас нет прав на просмотр этой страницы</p>
+        </div>
+        <span th:if="${back != null}">
+            <a th:href="${back}">Вернуться назад</a>
+        </span>
+    </div>
+</div>
+</body>
+</html>

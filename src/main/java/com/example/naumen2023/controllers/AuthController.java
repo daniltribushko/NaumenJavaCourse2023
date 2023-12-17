@@ -2,6 +2,7 @@ package com.example.naumen2023.controllers;
 
 import com.example.naumen2023.models.entities.UserEntity;
 import com.example.naumen2023.services.users.UserService;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -19,6 +20,15 @@ public class AuthController {
     @RequestMapping("/login")
     public String login(){
         return "login";
+    }
+
+    @GetMapping("/access-denied")
+    public String accessDenied(HttpServletRequest request, Model model) {
+        String referrer = request.getHeader("Referer");
+        if(referrer!=null) {
+            model.addAttribute("back", referrer);
+        }
+        return "access-denied";
     }
 
     @GetMapping("/registration")

@@ -7,5 +7,4 @@ import java.util.List;
 
 public interface HHruParserInterface {
     List<VacancyHHruJson> getAllVacanciesFromRussia(ProgrammingLanguageName programmingLanguage);
-
 }

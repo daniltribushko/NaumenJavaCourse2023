@@ -107,7 +107,7 @@ public class HHruParser implements HHruParserInterface {
                             .create()
                             .fromJson(response.toString(), VacancyHHruJson.class)
                     );
-                    log.info(programmingLanguage.getName() + " : Вкансия получена " + (i + 1) + "/" + countIds);
+                    log.info(programmingLanguage.getName() + " : Вакансия получена " + (i + 1) + "/" + countIds);
                 } else {
                     log.warn("response is null");
                 }
