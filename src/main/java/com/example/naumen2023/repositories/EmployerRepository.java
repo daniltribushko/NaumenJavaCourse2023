@@ -7,4 +7,5 @@ import java.util.Optional;
 
 public interface EmployerRepository extends JpaRepository<EmployerEntity, Long> {
     Optional<EmployerEntity> findByIdHHru(String idHHru);
+    Optional<EmployerEntity> findByName(String name);
 }

@@ -40,7 +40,7 @@ public class SecurityConfig {
 
     @Bean
     public AuthenticationSuccessHandler authenticationSuccessHandler(){
-        return new urlAuthenticationSuccessHandler();
+        return new UrlAuthenticationSuccessHandler();
     }
 
     @Bean
