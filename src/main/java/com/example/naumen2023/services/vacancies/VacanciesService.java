@@ -1,5 +1,7 @@
 package com.example.naumen2023.services.vacancies;
 
+import com.example.naumen2023.models.dto.response.GetAreaResponseDto;
+import com.example.naumen2023.models.dto.response.GetEmployerResponseDto;
 import com.example.naumen2023.models.dto.response.GetVacanciesResponseDto;
 import jakarta.validation.constraints.NotBlank;
 import org.springframework.data.domain.Pageable;
@@ -19,5 +21,7 @@ public interface VacanciesService {
             Integer fromSalary,
             Integer toSalary,
             Pageable pageable);
+    List<GetAreaResponseDto> getAllAreas();
+    List<GetEmployerResponseDto> getAllEmployers();
 
 }

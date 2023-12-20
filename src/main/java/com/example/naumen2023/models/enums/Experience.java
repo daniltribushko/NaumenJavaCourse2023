@@ -10,15 +10,17 @@ import lombok.Getter;
  */
 @Getter
 public enum Experience {
-    NO_EXPERIENCE("Без опыта работы"),
-    BETWEEN_1_AND_3("От 1 до 3 лет"),
-    BETWEEN_3_AND_6("От 3 до 6 лет"),
-    MORE_THAN_6("От 6 лет");
+    NO_EXPERIENCE("noExperience","Без опыта работы"),
+    BETWEEN_1_AND_3("between1And3","От 1 до 3 лет"),
+    BETWEEN_3_AND_6("between3And6","От 3 до 6 лет"),
+    MORE_THAN_6("moreThan6","От 6 лет");
 
     private final String ruName;
+    private final String name;
 
-    Experience(String ruName){
+    Experience(String name, String ruName){
         this.ruName = ruName;
+        this.name = name;
     }
 
     public static Experience getExperienceFromString(String experience){

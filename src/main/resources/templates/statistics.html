@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="https://www.thymeleaf.org" >
+<html lang="en" xmlns:th="https://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Статистика по языкам программирования</title>
@@ -14,25 +14,31 @@
             </option>
             <option th:each="pl:${progrmmingLanguages}" th:value="${pl.getName()}" th:text="${pl.getName()}"/>
         </select>
-        <input type="text" name="employer" placeholder="Введите работодателя"/>
-        <input type="text" name="area" placeholder="Введите регион"/>
+        <select name="employer">
+            <option th:value="null" disabled selected>Выберите работодателя</option>
+            <option th:each="e:${employers}" th:value="${e.name}" th:text="${e.name}"/>
+        </select>
+        <select name="area">
+            <option th:value="null" disabled selected>Выберите Регион</option>
+            <option th:each="a:${areas}" th:value="${a.name}" th:text="${a.name}"/>
+        </select>
         <select name="experience">
             <option value="" disabled selected>
                 Выберите опыт работы
             </option>
-            <option th:each="e:${experience}" th:value="${e}" th:text="${e.getRuName()}"/>
+            <option th:each="e:${experience}" th:value="${e.name}" th:text="${e.getRuName()}"/>
         </select>
         <select name="employment">
             <option value="" disabled selected>
                 Выберите тип занятости
             </option>
-            <option th:each="em:${employment}" th:value="${em}" th:text="${em.getRuName()}"/>
+            <option th:each="em:${employment}" th:value="${em.name}" th:text="${em.getRuName()}"/>
         </select>
         <select name="schedule">
             <option value="" disabled selected>
                 Выберите график работы
             </option>
-            <option th:each="s:${schedule}" th:value="${s}" th:text="${s.getRuName()}"/>
+            <option th:each="s:${schedule}" th:value="${s.name}" th:text="${s.getRuName()}"/>
         </select>
         <input type="number" min="1" name="fromSalary" placeholder="Выберите значение зарплаты от"/>
         <input type="number" min="2" name="toSalary" placeholder="Выберите значение зарплаты до"/>
@@ -40,9 +46,19 @@
         <input type="number" min="1" name="count" placeholder="Введите количество вакансий"/>
         <input type="submit" value="Получить">
     </form>
-    <div th:each="vacancy:${vacancies}">
-        <p th:text="${vacancy.name}"/>
-    </div>
+    <table>
+        <tr th:each="vacancy:${vacancies}">
+            <td th:text="${vacancy.name}"/>
+            <td th:text="${vacancy.employer.name}"/>
+            <td th:text="${vacancy.area.name}"/>
+            <td th:text="${vacancy.schedule}"/>
+            <td th:text="${vacancy.employment}"/>
+            <td th:text="${vacancy.experience}"/>
+            <td>
+                <a th:src="${vacancy.getUrl()}"/>
+            </td>
+        </tr>
+    </table>
 </main>
 </body>
 </html>

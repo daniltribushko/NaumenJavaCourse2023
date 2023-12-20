@@ -63,7 +63,7 @@
     <div class="not-in-team" th:if="${user.getTeam() == null}">
         <div class="make-team">
             <h3>Создание команды:</h3>
-            <form th:method="POST" th:action="@{/teams/create}" th:object="${team}">
+            <form method="post" th:action="@{/teams/create}" th:object="${team}">
                 <input type="hidden" th:name="${_csrf.getParameterName()}" th:value="${_csrf.getToken()}">
                 <label for="name">Введите название команды: </label>
                 <input type="text" th:field="*{name}" id="name"/>

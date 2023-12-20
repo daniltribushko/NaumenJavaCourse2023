@@ -10,20 +10,21 @@ import lombok.Getter;
  */
 @Getter
 public enum Schedule {
-    FULL_DAY("Полный день"),
+    FULL_DAY("Полный день","fullDay"),
     //Сменный график
-    SHIFT("Сменный график"),
+    SHIFT("Сменный график", "shift"),
     //Гибкий график
-    FLEXIBLE("Гибкий график"),
+    FLEXIBLE("Гибкий график", "flexible"),
     //Удаленная работа
-    REMOTE("Удаленная работа"),
+    REMOTE("Удаленная работа", "remote"),
     //Вахтовый метод
-    FLY_IN_FLY_OUT("Вахтовый метод");
+    FLY_IN_FLY_OUT("Вахтовый метод","flyInFlyOut");
 
     private final String ruName;
-
-    Schedule(String ruName){
+    private final String name;
+    Schedule(String ruName, String name){
         this.ruName = ruName;
+        this.name = name;
     }
 
     public static Schedule getScheduleFromString(String schedule){

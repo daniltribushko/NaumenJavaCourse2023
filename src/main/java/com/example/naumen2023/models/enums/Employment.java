@@ -10,17 +10,19 @@ import lombok.Getter;
  */
 @Getter
 public enum Employment {
-    FULL("Полная занятость"),
-    PART("Частичная занятость"),
-    PROJECT("Проектная работа"),
-    VOLUNTEER("Волонтерство"),
+    FULL("Полная занятость", "full"),
+    PART("Частичная занятость", "part"),
+    PROJECT("Проектная работа", "project"),
+    VOLUNTEER("Волонтерство", "volunteer"),
     //Стажировка
-    PROBATION("Стажировка");
+    PROBATION("Стажировка", "probation");
 
     private final String ruName;
+    private final String name;
 
-    Employment(String ruName){
+    Employment(String ruName, String name){
         this.ruName = ruName;
+        this.name = name;
     }
 
     public static Employment getEmploymentFromString(String employment) {

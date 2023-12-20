@@ -1,6 +1,8 @@
 package com.example.naumen2023.services.vacancies.imp;
 
 import com.example.naumen2023.exeptions.*;
+import com.example.naumen2023.models.dto.response.GetAreaResponseDto;
+import com.example.naumen2023.models.dto.response.GetEmployerResponseDto;
 import com.example.naumen2023.models.dto.response.GetVacanciesResponseDto;
 import com.example.naumen2023.models.entities.AreaEntity;
 import com.example.naumen2023.models.entities.EmployerEntity;
@@ -100,6 +102,16 @@ public class VacanciesServiceImp implements VacanciesService {
         return vacancies.stream()
                 .map(GetVacanciesResponseDto::mapFromEntity)
                 .toList();
+    }
+
+    @Override
+    public List<GetAreaResponseDto> getAllAreas() {
+        return areaRepository.findAll().stream().map(GetAreaResponseDto::mapFromEntity).toList();
+    }
+
+    @Override
+    public List<GetEmployerResponseDto> getAllEmployers() {
+        return employerRepository.findAll().stream().map(GetEmployerResponseDto::mapFromEntity).toList();
     }
 
     /**

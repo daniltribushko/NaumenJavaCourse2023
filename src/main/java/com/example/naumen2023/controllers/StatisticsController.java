@@ -1,5 +1,7 @@
 package com.example.naumen2023.controllers;
 
+import com.example.naumen2023.models.dto.response.GetAreaResponseDto;
+import com.example.naumen2023.models.dto.response.GetEmployerResponseDto;
 import com.example.naumen2023.models.dto.response.GetVacanciesResponseDto;
 import com.example.naumen2023.models.enums.Employment;
 import com.example.naumen2023.models.enums.Experience;
@@ -19,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.util.Comparator;
 import java.util.List;
 
 @Validated
@@ -27,13 +30,23 @@ import java.util.List;
 public class StatisticsController {
     private final VacanciesService vacanciesService;
 
+    private List<GetAreaResponseDto> areas;
+    private List<GetEmployerResponseDto> employers;
     @Autowired
     public StatisticsController(VacanciesService vacanciesService) {
         this.vacanciesService = vacanciesService;
+        areas = vacanciesService.getAllAreas().stream()
+                .sorted(Comparator.comparing(GetAreaResponseDto::getName))
+                .toList();
+        employers = vacanciesService.getAllEmployers().stream()
+                .sorted(Comparator.comparing(GetEmployerResponseDto::getName))
+                .toList();
     }
 
     @GetMapping("")
     public String viewMainPage(Model model){
+        model.addAttribute("areas", areas);
+        model.addAttribute("employers", employers);
         model.addAttribute("progrmmingLanguages", ProgrammingLanguageName.values());
         model.addAttribute("schedule", Schedule.values());
         model.addAttribute("experience", Experience.values());
@@ -59,6 +72,8 @@ public class StatisticsController {
             @Min(value = 1, message = "Count can't be less than 1")
             Integer count
     ) {
+        model.addAttribute("areas", areas);
+        model.addAttribute("employers", employers);
         model.addAttribute("progrmmingLanguages", ProgrammingLanguageName.values());
         model.addAttribute("schedule", Schedule.values());
         model.addAttribute("experience", Experience.values());
