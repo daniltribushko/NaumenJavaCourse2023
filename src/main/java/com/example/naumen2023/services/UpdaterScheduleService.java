@@ -29,31 +29,16 @@ public class UpdaterScheduleService {
     }
 
     @Async
-    @Scheduled(cron = "0 45 12 * * *")
+    @Scheduled(cron = "0 20 17 * * *")
     public void saveAllVacancies() throws InterruptedException {
         HHruParser parser = new HHruParser();
         Map<ProgrammingLanguageName, List<VacancyHHruJson>> vacancies = new HashMap<>();
-        Set<EmployerJson> employers = new HashSet<>();
-        Set<AreaJson> areas = new HashSet<>();
         for (ProgrammingLanguageName programmingLanguageName : ProgrammingLanguageName.values()) {
-            List<VacancyHHruJson> vacanciesJson = parser.getAllVacanciesFromRussia(programmingLanguageName);
-            List<VacancyHHruJson> rightVacancies = new ArrayList<>();
-            vacanciesJson.forEach(v -> {
-                        EmployerJson employerJson = v.getEmployer();
-                        AreaJson areaJson = v.getArea();
-                        if (employerJson != null && areaJson != null) {
-                            employers.add(v.getEmployer());
-                            areas.add(v.getArea());
-                            rightVacancies.add(v);
-                        }
-                    }
-            );
-            vacancies.put(programmingLanguageName, rightVacancies);
+            vacancies.put(programmingLanguageName, parser.getAllVacanciesFromRussia(programmingLanguageName));
+
         }
-        programmingLanguageService.saveAreasAndEmployers(areas, employers);
         for (Map.Entry<ProgrammingLanguageName, List<VacancyHHruJson>> vacancy : vacancies.entrySet()) {
             programmingLanguageService.saveVacancies(vacancy.getKey(), vacancy.getValue());
-
         }
         graphicsDrawer.drawAllGraphics();
     }

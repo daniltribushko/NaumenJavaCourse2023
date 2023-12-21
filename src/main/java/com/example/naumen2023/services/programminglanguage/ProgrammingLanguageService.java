@@ -122,36 +122,6 @@ public class ProgrammingLanguageService {
         }
     }
 
-    @Async
-    protected void saveEmployers(Set<EmployerJson> employers) {
-        for (EmployerJson employer : employers) {
-            EmployerEntity employerEntity = employerRepository
-                    .findByIdHHru(employer.getIdHHru())
-                    .orElse(null);;
-            if (employerEntity == null) {
-                EmployerJson.Logo logo = employer.getLogo();
-                String logoUrl = null;
-                if (logo != null) {
-                    logoUrl = logo.url();
-                }
-                employerRepository.save(new EmployerEntity(
-                        employer.getIdHHru(),
-                        employer.getName(),
-                        employer.getUrl(),
-                        logoUrl)
-                );
-                log.info("employer saved");
-            } else {
-                log.info("employer already saved");
-            }
-        }
-    }
-
-    public void saveAreasAndEmployers(Set<AreaJson> areas, Set<EmployerJson> employers){
-        saveAreas(areas);
-        saveEmployers(employers);
-    }
-    @Async
     public void saveVacancies(ProgrammingLanguageName programmingLanguageName, List<VacancyHHruJson> vacancies) {
         ProgrammingLanguageEntity programmingLanguage = programmingLanguageRepository
                 .findByName(programmingLanguageName)
@@ -169,44 +139,52 @@ public class ProgrammingLanguageService {
                         AreaEntity area = areaRepository
                                 .findByHhRuId(vacancy.getArea().getId())
                                 .orElse(null);
-                        System.out.println(employer);
-                        System.out.println(area);
-                        if (employer != null && area != null) {
-                            SalaryEntity salaryEntity = getSalaryEntity(vacancy);
-                            String date = vacancy.getDatePublish().split("\\+")[0
-                                    ].replace("T", " ");
-                            //Создаем новую сущность вакансии
-                            vacancyHHruEntity = new VacancyHHruEntity(
-                                    vacancy.getId(),
-                                    vacancy.getName(),
-                                    Experience.getExperienceFromString(
-                                            vacancy
-                                                    .getExperience()
-                                                    .id()
-                                    ),
-                                    Schedule.getScheduleFromString(
-                                            vacancy
-                                                    .getSchedule()
-                                                    .id()
-                                    ),
-                                    Employment.getEmploymentFromString(
-                                            vacancy
-                                                    .getEmployment()
-                                                    .id()
-                                    ),
-                                    LocalDateTime.parse(date, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")),
-                                    vacancy.getUrl());
-                            //Добавляем в вакансию сущности навыков
-                            addSkills(vacancyHHruEntity, vacancy.getSkills());
-                            //Добавляем язык программирования, регион, работодателя, зарплату
-                            programmingLanguage.addVacancies(vacancyHHruEntity);
-                            area.addVacancy(vacancyHHruEntity);
-                            employer.addVacancies(vacancyHHruEntity);
-                            vacancyHHruEntity.setSalary(salaryEntity);
-                            //Сохраняем вакансию
-                            vacancyHHruRepository.save(vacancyHHruEntity);
-                            log.info("vacancy saved");
+                        if (employer == null) {
+                            var e = vacancy.getEmployer();
+                            employer = new EmployerEntity(e.getIdHHru(), e.getName(), e.getUrl(),
+                                    e.getLogo() != null ? e.getLogo().url() : null);
+                            employerRepository.save(employer);
                         }
+                        if (area == null) {
+                            var a = vacancy.getArea();
+                            area = new AreaEntity(a.getId(), a.getName());
+                            areaRepository.save(area);
+                        }
+                        SalaryEntity salaryEntity = getSalaryEntity(vacancy);
+                        String date = vacancy.getDatePublish().split("\\+")[0
+                                ].replace("T", " ");
+                        //Создаем новую сущность вакансии
+                        vacancyHHruEntity = new VacancyHHruEntity(
+                                vacancy.getId(),
+                                vacancy.getName(),
+                                Experience.getExperienceFromString(
+                                        vacancy
+                                                .getExperience()
+                                                .id()
+                                ),
+                                Schedule.getScheduleFromString(
+                                        vacancy
+                                                .getSchedule()
+                                                .id()
+                                ),
+                                Employment.getEmploymentFromString(
+                                        vacancy
+                                                .getEmployment()
+                                                .id()
+                                ),
+                                LocalDateTime.parse(date, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")),
+                                vacancy.getUrl());
+                        //Добавляем в вакансию сущности навыков
+                        addSkills(vacancyHHruEntity, vacancy.getSkills());
+                        //Добавляем язык программирования, регион, работодателя, зарплату
+                        programmingLanguage.addVacancies(vacancyHHruEntity);
+                        area.addVacancy(vacancyHHruEntity);
+                        employer.addVacancies(vacancyHHruEntity);
+                        vacancyHHruEntity.setSalary(salaryEntity);
+                        //Сохраняем вакансию
+                        vacancyHHruRepository.save(vacancyHHruEntity);
+                        log.info("vacancy saved");
+
                     }
                 } catch (Exception e) {
                     log.warn(e.getMessage());

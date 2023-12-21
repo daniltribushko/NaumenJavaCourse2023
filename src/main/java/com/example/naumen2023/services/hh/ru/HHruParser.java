@@ -26,7 +26,7 @@ public class HHruParser implements HHruParserInterface {
     //id России
     private static final String AREA_ID = "113";
     //Количество вакансий на одной странице
-    private static final String PER_PAGE = "10";
+    private static final String PER_PAGE = "100";
     //Количество страниц
     private static final Integer COUNT_PAGE = 1;
     //АДрес для получения вакансий при помощи hh.ru api
